@@ -7,7 +7,8 @@ endDate: "2024-10"
 summary: "Identified that 90%+ of opportunities lacked complete buying-group data. Built an automated analysis of engagement signals to surface stakeholders with high accuracy."
 tags: [PM, AI, Shipped]
 status: shipped
-order: 13
+featured: true
+order: 6
 ---
 
 ## The hidden gap
