@@ -7,7 +7,8 @@ endDate: "2025-03"
 summary: "Lead PM on a generative agent that compresses an hour of pre-call account research into under a minute. Generated millions in pipeline; closed roughly a hundred deals in the first six months."
 tags: [PM, AI, Shipped]
 status: shipped
-order: 10
+featured: true
+order: 4
 ---
 
 ## The bet

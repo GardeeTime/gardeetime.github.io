@@ -6,8 +6,7 @@ startDate: "2026-03"
 summary: "Two-step AI pipeline that converts existing email HTML into editable templates. Tested clean across seven varied brand emails."
 tags: [AI-PM, Eng, POC]
 status: poc
-featured: true
-order: 4
+order: 10
 ---
 
 ## What it does
