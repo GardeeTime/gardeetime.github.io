@@ -1,0 +1,167 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../../layouts/Base.astro";
+
+const entries = await getCollection("work");
+const sorted = entries.sort((a, b) => {
+  const ao = a.data.order ?? 999;
+  const bo = b.data.order ?? 999;
+  if (ao !== bo) return ao - bo;
+  return b.data.startDate.localeCompare(a.data.startDate);
+});
+
+function fmtDate(s: string) {
+  const [y, m] = s.split("-");
+  const months = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  return `${months[Number(m)] ?? m} ${y}`;
+}
+
+function range(start: string, end?: string) {
+  const s = fmtDate(start);
+  if (!end) return `${s} → now`;
+  return `${s} → ${fmtDate(end)}`;
+}
+---
+
+<Base title="Work — Adam Gardner">
+  <section class="page-head">
+    <div class="container-prose">
+      <p class="eyebrow">Work</p>
+      <h1>Selected work, decisions, and systems shipped.</h1>
+      <p class="page-head__lede">
+        A growing log of what I've built, the bets I've made, and the things I've learned along the way. Pulled from my running portfolio &mdash; new entries get pushed automatically as I ship.
+      </p>
+    </div>
+  </section>
+
+  <section class="work-list">
+    <div class="container-wide">
+      <ul>
+        {sorted.map((entry) => (
+          <li class="work-item">
+            <a href={`/work/${entry.id}/`} class="work-item__link">
+              <div class="work-item__meta">
+                <span class="meta">{entry.data.company}</span>
+                <span class="meta meta--dot">·</span>
+                <span class="meta">{range(entry.data.startDate, entry.data.endDate)}</span>
+              </div>
+              <h2 class="work-item__title">{entry.data.title}</h2>
+              <p class="work-item__summary">{entry.data.summary}</p>
+              <div class="work-item__tags">
+                {entry.data.tags.map((t) => <span class="tag">{t}</span>)}
+                <span class:list={["tag", `tag-${entry.data.status}`]}>{entry.data.status}</span>
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-head {
+    padding-top: clamp(3rem, 7vh, 5rem);
+    padding-bottom: 1.5rem;
+  }
+
+  .page-head h1 {
+    margin-block: 0.75rem 1.25rem;
+  }
+
+  .page-head__lede {
+    color: var(--color-ink-muted);
+    max-width: 50ch;
+    font-size: 1.0625rem;
+  }
+
+  .work-list {
+    padding-block: 2rem 4rem;
+  }
+
+  .work-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 1px;
+    background: var(--color-border);
+    border-block: 1px solid var(--color-border);
+  }
+
+  .work-item {
+    background: var(--color-bg);
+    transition: background 250ms ease;
+  }
+
+  .work-item:hover {
+    background: var(--color-bg-elevated);
+  }
+
+  .work-item__link {
+    display: block;
+    color: inherit;
+    padding: 1.75rem 1.5rem;
+    text-decoration: none;
+  }
+
+  .work-item__meta {
+    display: flex;
+    gap: 0.5rem;
+    align-items: baseline;
+    margin-bottom: 0.5rem;
+  }
+
+  .work-item__meta .meta--dot {
+    color: var(--color-ink-subtle);
+  }
+
+  .work-item__title {
+    font-family: var(--font-serif);
+    font-size: 1.625rem;
+    font-variation-settings: "opsz" 36, "SOFT" 30;
+    margin-bottom: 0.5rem;
+    color: var(--color-ink);
+    transition: color 250ms ease;
+  }
+
+  .work-item__link:hover .work-item__title {
+    color: var(--color-spore);
+  }
+
+  .work-item__summary {
+    color: var(--color-ink-muted);
+    font-size: 0.9375rem;
+    max-width: 60ch;
+    margin-bottom: 0.875rem;
+  }
+
+  .work-item__tags {
+    display: flex;
+    gap: 0.375rem;
+    flex-wrap: wrap;
+  }
+
+  .tag-shipped {
+    border-color: color-mix(in oklab, var(--color-moss) 50%, transparent);
+    color: var(--color-moss-glow);
+    background: color-mix(in oklab, var(--color-moss) 10%, transparent);
+  }
+
+  .tag-poc {
+    border-color: color-mix(in oklab, var(--color-rust) 50%, transparent);
+    color: var(--color-rust);
+    background: color-mix(in oklab, var(--color-rust) 10%, transparent);
+  }
+
+  .tag-in-progress {
+    border-color: color-mix(in oklab, var(--color-spore) 40%, transparent);
+    color: var(--color-spore);
+  }
+
+  @media (min-width: 720px) {
+    .work-item__link {
+      padding: 2rem;
+    }
+  }
+</style>

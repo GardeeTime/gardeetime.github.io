@@ -1,0 +1,313 @@
+---
+import Base from "../layouts/Base.astro";
+
+const timeline = [
+  { company: "Backstroke", role: "Director of Product", dates: "Jan 2026 — present", note: "AI-driven product systems for marketers. Predictive content, hero personalization, and Slack-native delivery." },
+  { company: "Salesloft", role: "Senior Staff PM", dates: "Aug 2025 — Jan 2026", note: "AI agent features at enterprise scale." },
+  { company: "Salesloft", role: "Staff PM", dates: "Dec 2022 — Aug 2025", note: "Led discovery and delivery on multiple AI and forecasting initiatives." },
+  { company: "Salesloft", role: "Senior PM", dates: "Mar 2020 — Dec 2022", note: "Shipped revenue-impacting features in a hyper-growth sales engagement platform." },
+  { company: "Lessonly (now Seismic Learning)", role: "Product Manager", dates: "Nov 2016 — Mar 2020", note: "First PM. Took the platform from knowledge transfer into performance — practice, coaching, and learning paths." },
+  { company: "Geofeedia", role: "PM / Business Analyst", dates: "May 2015 — Oct 2016", note: "Started as a BA, became PM. Real-time location-based social intelligence." },
+  { company: "ExactTarget", role: "Slingshot Intern", dates: "May 2014 — Aug 2014", note: "First marketing-tech exposure. The roots of how I think about the email/martech space today." },
+];
+
+const principles = [
+  { key: "Fixed time, variable scope", body: "Six-week appetite cycles with smart trade-offs. Scope is the lever, not the deadline." },
+  { key: "Embed with users", body: "I watch users in their environment, replay sessions, and build plans from what I see — not what I assume." },
+  { key: "Shape before building", body: "Set the boundary. Leave the team room inside it." },
+  { key: "Autonomous small teams", body: "Context, not micromanagement. The best teams I've worked with had clarity on the why and freedom on the how." },
+  { key: "Scrappy execution", body: "Wear multiple hats. Speed and iteration over polish that ships in three months." },
+  { key: "AI prototyping", body: "Validate concepts in days, not weeks. I prototype directly in code now — Claude Code is my coding partner." },
+  { key: "Champagne feedback", body: "Honest internal feedback right after launch. The first 10 days teach you more than 10 weeks of pre-launch research." },
+  { key: "Impact metrics", body: "Track the business, the user, and the outcome — and share the data, including when it's not flattering." },
+];
+---
+
+<Base title="About — Adam Gardner" description="Director of Product at Backstroke. Career, philosophy, and what I do when I'm not at a keyboard.">
+  <section class="page-head">
+    <div class="container-prose">
+      <p class="eyebrow">About</p>
+      <h1>Hi, I'm Adam.</h1>
+      <p class="lede">
+        I've spent the last decade building products at the seams of marketing, sales, and AI. I joined Backstroke in January 2026 as Director of Product. Before that, six years at Salesloft (Senior PM through Senior Staff). Before that, first PM at Lessonly.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container-prose">
+      <h2 class="section__heading">What I'm doing now</h2>
+      <p>
+        Building Backstroke's predictive content layer for marketers — Surge for campaigns, Surge for flows, predictive subject lines, and a UCB-based content library that lives portably across an account. I'm shipping POCs in code (Claude Code, Astro, Rails, React) and handing them to engineering with a `/feature-audit` pass to make the review tractable.
+      </p>
+      <p>
+        I'd never written production code before joining Backstroke. I now ship code daily. The arc from "PM who reads tickets" to "PM who lands PRs" has been the most fun part of this year.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container-prose">
+      <h2 class="section__heading">How I work</h2>
+      <ol class="principles">
+        {principles.map((p) => (
+          <li class="principle">
+            <span class="principle__key">{p.key}</span>
+            <span class="principle__body">{p.body}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container-wide">
+      <h2 class="section__heading section__heading--wide">Career</h2>
+      <ol class="timeline">
+        {timeline.map((t) => (
+          <li class="timeline-row">
+            <div class="timeline-row__dates">
+              <span class="meta">{t.dates}</span>
+            </div>
+            <div class="timeline-row__main">
+              <p class="timeline-row__company">{t.company}</p>
+              <p class="timeline-row__role">{t.role}</p>
+              <p class="timeline-row__note">{t.note}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container-prose">
+      <h2 class="section__heading">Off the clock</h2>
+      <p>
+        I keep <strong>six raised garden beds</strong>, a hydroponic tower, and a small compost system in Indianapolis. I run half marathons (slowly, but I finish). I'm a Purdue basketball fan with the receipts to prove it. My last mile is usually with my dog.
+      </p>
+      <p>
+        The mycelium network powering this site is a deliberate choice — most of what I build at work is a network of small connected things that share roots. Same as the garden.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container-prose">
+      <h2 class="section__heading">Education + cert</h2>
+      <ul class="plain-list">
+        <li><strong>Purdue University</strong>, Krannert School of Management — B.S. Business Management, Marketing</li>
+        <li><strong>Pragmatic Marketing Certified</strong> — Level II (PMC-II)</li>
+        <li><strong>Improving Your Product Sense</strong> — Shreyas Doshi cohort</li>
+        <li><strong>Product Discovery Fundamentals</strong> — Theresa Torres</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container-prose">
+      <h2 class="section__heading">Stack</h2>
+      <p class="meta meta--label">Design / planning</p>
+      <p>Figma, Notion, Productboard, Linear</p>
+      <p class="meta meta--label">Analytics</p>
+      <p>PostHog, Looker, Mixpanel, Segment, Fullstory</p>
+      <p class="meta meta--label">AI</p>
+      <p>Claude (Code + API), Gemini, OpenAI</p>
+      <p class="meta meta--label">Release / ops</p>
+      <p>LaunchDarkly, Flipper, GitHub Actions</p>
+    </div>
+  </section>
+
+  <section class="section section--cta">
+    <div class="container-prose">
+      <hr />
+      <p class="meta">Want to talk about AI in product, predictive content for ESPs, or building POCs as a non-engineer? <a href="mailto:adamgardner32@gmail.com" class="ink-link">Email me</a> or <a href="https://www.linkedin.com/in/adamgardner-97508353" class="ink-link" target="_blank" rel="noreferrer noopener">find me on LinkedIn</a>.</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-head {
+    padding-top: clamp(3rem, 7vh, 5rem);
+    padding-bottom: 1.5rem;
+  }
+
+  .page-head h1 {
+    margin-block: 0.75rem 1.25rem;
+  }
+
+  .lede {
+    font-family: var(--font-serif);
+    font-size: clamp(1.125rem, 1.7vw, 1.3125rem);
+    line-height: 1.5;
+    color: var(--color-ink);
+    max-width: 50ch;
+    font-variation-settings: "opsz" 24, "SOFT" 50;
+  }
+
+  .section {
+    padding-block: 2rem;
+  }
+
+  .section--cta {
+    padding-top: 1rem;
+  }
+
+  .section__heading {
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    font-variation-settings: "opsz" 36, "SOFT" 30;
+    margin-bottom: 1.25rem;
+    color: var(--color-spore);
+  }
+
+  .section__heading--wide {
+    margin-bottom: 2rem;
+  }
+
+  .section p {
+    color: var(--color-ink-muted);
+    margin-bottom: 1rem;
+    line-height: 1.7;
+  }
+
+  .section p strong {
+    color: var(--color-ink);
+    font-weight: 500;
+  }
+
+  .principles {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    counter-reset: principle;
+  }
+
+  .principle {
+    display: grid;
+    grid-template-columns: minmax(0, 13rem) 1fr;
+    gap: 1.5rem;
+    align-items: baseline;
+    padding-block: 0.875rem;
+    border-bottom: 1px solid var(--color-border);
+    counter-increment: principle;
+  }
+
+  .principle:last-child {
+    border-bottom: none;
+  }
+
+  .principle__key {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    font-variation-settings: "opsz" 18, "SOFT" 50;
+    color: var(--color-ink);
+    position: relative;
+  }
+
+  .principle__key::before {
+    content: "0" counter(principle);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: var(--color-moss);
+    letter-spacing: 0.1em;
+    margin-right: 0.625rem;
+    vertical-align: 0.15em;
+  }
+
+  .principle__body {
+    color: var(--color-ink-muted);
+    line-height: 1.6;
+    font-size: 0.9375rem;
+  }
+
+  .timeline {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .timeline-row {
+    display: grid;
+    grid-template-columns: 12rem 1fr;
+    gap: 2rem;
+    padding-block: 1.25rem;
+    border-bottom: 1px solid var(--color-border);
+    align-items: baseline;
+  }
+
+  .timeline-row:last-child {
+    border-bottom: none;
+  }
+
+  .timeline-row__dates {
+    padding-top: 0.25rem;
+  }
+
+  .timeline-row__company {
+    font-family: var(--font-serif);
+    font-size: 1.125rem;
+    font-variation-settings: "opsz" 24, "SOFT" 30;
+    color: var(--color-ink);
+    margin-bottom: 0.125rem;
+  }
+
+  .timeline-row__role {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-moss);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.625rem;
+  }
+
+  .timeline-row__note {
+    color: var(--color-ink-muted);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    max-width: 60ch;
+  }
+
+  .meta--label {
+    text-transform: uppercase;
+    color: var(--color-moss);
+    margin-top: 1.25rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .plain-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .plain-list li {
+    color: var(--color-ink-muted);
+    line-height: 1.6;
+  }
+
+  .plain-list strong {
+    color: var(--color-ink);
+    font-weight: 500;
+  }
+
+  @media (max-width: 720px) {
+    .principle {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+
+    .timeline-row {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+  }
+</style>

@@ -1,0 +1,152 @@
+---
+import { getCollection } from "astro:content";
+
+const all = await getCollection("testimonials");
+const testimonials = all.sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999));
+---
+
+<section class="testimonials">
+  <div class="container-wide">
+    <div class="testimonials__head">
+      <p class="eyebrow">Said about my work</p>
+      <p class="testimonials__hint meta">Drag to scroll →</p>
+    </div>
+
+    <div class="testimonials__scroller" data-testimonials-scroll>
+      {
+        testimonials.map((t) => (
+          <article class="quote-card">
+            <span class="quote-card__mark" aria-hidden="true">&ldquo;</span>
+            <p class="quote-card__quote">{t.data.quote}</p>
+            <footer class="quote-card__attr">
+              {t.data.author && <span class="quote-card__name">{t.data.author}</span>}
+              <span class="quote-card__role">
+                {t.data.role}
+                {t.data.role && t.data.company && " · "}
+                {t.data.company}
+              </span>
+            </footer>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .testimonials {
+    padding-block: 4rem 2.5rem;
+    border-top: 1px solid var(--color-border);
+    margin-top: 4rem;
+  }
+
+  .testimonials__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+  }
+
+  .testimonials__hint {
+    color: var(--color-ink-subtle);
+  }
+
+  .testimonials__scroller {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    padding: 0.25rem 0 1.5rem;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 1.5rem;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border) transparent;
+    margin-inline: -1.5rem;
+    padding-inline: 1.5rem;
+  }
+
+  .testimonials__scroller::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .testimonials__scroller::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: 3px;
+  }
+
+  .quote-card {
+    flex: 0 0 min(85%, 22rem);
+    scroll-snap-align: start;
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 1.75rem 1.75rem 1.5rem;
+    position: relative;
+    transition: border-color 250ms ease, transform 250ms ease;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .quote-card:hover {
+    border-color: var(--color-border-glow);
+    transform: translateY(-2px);
+  }
+
+  .quote-card__mark {
+    position: absolute;
+    top: 0.25rem;
+    left: 1.25rem;
+    font-family: var(--font-serif);
+    font-size: 4rem;
+    line-height: 1;
+    color: color-mix(in oklab, var(--color-moss) 35%, transparent);
+    pointer-events: none;
+    user-select: none;
+    font-variation-settings: "opsz" 144, "SOFT" 50;
+  }
+
+  .quote-card__quote {
+    font-family: var(--font-serif);
+    font-size: 1.0625rem;
+    line-height: 1.55;
+    color: var(--color-ink);
+    margin: 0;
+    font-variation-settings: "opsz" 18, "SOFT" 50;
+    flex-grow: 1;
+  }
+
+  .quote-card__attr {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    margin-top: auto;
+    padding-top: 0.75rem;
+    border-top: 1px solid color-mix(in oklab, var(--color-border) 60%, transparent);
+  }
+
+  .quote-card__name {
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    color: var(--color-ink);
+    font-weight: 500;
+  }
+
+  .quote-card__role {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: var(--color-moss);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  @media (min-width: 720px) {
+    .quote-card {
+      flex-basis: 22rem;
+    }
+
+    .testimonials__hint {
+      display: none;
+    }
+  }
+</style>

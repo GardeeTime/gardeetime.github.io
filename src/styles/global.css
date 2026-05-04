@@ -1,0 +1,156 @@
+@import "tailwindcss";
+
+@theme {
+  /* Mycelium-inspired dark palette */
+  --color-bg: #0a0d0a;
+  --color-bg-elevated: #131711;
+  --color-bg-card: #181d16;
+  --color-ink: #ece9dc;
+  --color-ink-muted: #9c9885;
+  --color-ink-subtle: #5e5d50;
+  --color-moss: #7fa569;
+  --color-moss-glow: #9bc384;
+  --color-rust: #c98a5a;
+  --color-spore: #d4cfa3;
+  --color-border: #232820;
+  --color-border-glow: #3a4a31;
+
+  --font-serif: "Fraunces", "Iowan Old Style", "Apple Garamond", Georgia, serif;
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    background-color: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv11";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    min-height: 100dvh;
+    line-height: 1.6;
+    font-size: 1.0625rem;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background-color: var(--color-moss);
+    color: var(--color-bg);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: var(--color-ink);
+  }
+
+  h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); font-variation-settings: "opsz" 144, "SOFT" 50; }
+  h2 { font-size: clamp(1.75rem, 3.5vw, 2.5rem); font-variation-settings: "opsz" 96, "SOFT" 30; }
+  h3 { font-size: 1.5rem; font-variation-settings: "opsz" 36; }
+
+  a {
+    color: var(--color-moss-glow);
+    text-decoration: none;
+    transition: color 200ms ease;
+  }
+
+  a:hover {
+    color: var(--color-spore);
+  }
+
+  code, pre, kbd {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid var(--color-border);
+    margin: 3rem 0;
+  }
+}
+
+@layer components {
+  .container-prose {
+    width: 100%;
+    max-width: 42rem;
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+  }
+
+  .container-wide {
+    width: 100%;
+    max-width: 64rem;
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--color-moss);
+  }
+
+  .meta {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--color-ink-subtle);
+    letter-spacing: 0.02em;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 0.125rem 0.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: var(--color-ink-muted);
+    letter-spacing: 0.04em;
+    text-transform: lowercase;
+  }
+
+  .tag-shipped {
+    border-color: color-mix(in oklab, var(--color-moss) 35%, transparent);
+    color: var(--color-moss-glow);
+  }
+
+  .tag-poc, .tag-concept {
+    border-color: color-mix(in oklab, var(--color-rust) 35%, transparent);
+    color: var(--color-rust);
+  }
+
+  /* Subtle organic underline that grows on hover — for inline links */
+  .ink-link {
+    position: relative;
+    color: var(--color-ink);
+    border-bottom: 1px solid color-mix(in oklab, var(--color-moss) 50%, transparent);
+    transition: border-color 250ms ease, color 250ms ease;
+  }
+
+  .ink-link:hover {
+    color: var(--color-spore);
+    border-bottom-color: var(--color-rust);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

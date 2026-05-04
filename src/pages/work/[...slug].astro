@@ -1,0 +1,260 @@
+---
+import { getCollection, render } from "astro:content";
+import { Image } from "astro:assets";
+import Base from "../../layouts/Base.astro";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("work");
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+function fmtDate(s: string) {
+  const [y, m] = s.split("-");
+  const months = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  return `${months[Number(m)] ?? m} ${y}`;
+}
+
+function range(start: string, end?: string) {
+  const s = fmtDate(start);
+  if (!end) return `${s} → ongoing`;
+  return `${s} → ${fmtDate(end)}`;
+}
+---
+
+<Base title={`${entry.data.title} — Adam Gardner`} description={entry.data.summary}>
+  <article class="work-detail">
+    <header class="work-detail__header">
+      <div class="container-prose">
+        <p class="eyebrow">{entry.data.company} · {range(entry.data.startDate, entry.data.endDate)}</p>
+        <h1>{entry.data.title}</h1>
+        <p class="work-detail__lede">{entry.data.summary}</p>
+
+        <div class="work-detail__tags">
+          {entry.data.tags.map((t) => <span class="tag">{t}</span>)}
+          <span class:list={["tag", `tag-${entry.data.status}`]}>{entry.data.status}</span>
+        </div>
+
+        {entry.data.links.length > 0 && (
+          <ul class="work-detail__links">
+            {entry.data.links.map((l) => (
+              <li><a href={l.url} target="_blank" rel="noreferrer noopener">{l.label} →</a></li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </header>
+
+    {entry.data.heroImage && (
+      <figure class="work-detail__hero-image">
+        <Image
+          src={entry.data.heroImage}
+          alt={entry.data.heroImageAlt ?? entry.data.title}
+          widths={[480, 800, 1200]}
+          sizes="(min-width: 1024px) 1024px, 100vw"
+        />
+      </figure>
+    )}
+
+    <div class="container-prose work-detail__body prose">
+      <Content />
+    </div>
+
+    <footer class="work-detail__footer">
+      <div class="container-prose">
+        <hr />
+        <a href="/work/" class="work-detail__back">← All work</a>
+      </div>
+    </footer>
+  </article>
+</Base>
+
+<style>
+  .work-detail__header {
+    padding-top: clamp(3rem, 7vh, 5rem);
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: 3rem;
+  }
+
+  .work-detail__header h1 {
+    margin-block: 0.75rem 1.25rem;
+  }
+
+  .work-detail__lede {
+    font-family: var(--font-serif);
+    font-size: clamp(1.125rem, 1.7vw, 1.3125rem);
+    line-height: 1.5;
+    color: var(--color-ink);
+    max-width: 38ch;
+    font-variation-settings: "opsz" 24, "SOFT" 50;
+    margin-bottom: 1.5rem;
+  }
+
+  .work-detail__tags {
+    display: flex;
+    gap: 0.375rem;
+    flex-wrap: wrap;
+  }
+
+  .tag-shipped {
+    border-color: color-mix(in oklab, var(--color-moss) 50%, transparent);
+    color: var(--color-moss-glow);
+    background: color-mix(in oklab, var(--color-moss) 10%, transparent);
+  }
+
+  .tag-poc {
+    border-color: color-mix(in oklab, var(--color-rust) 50%, transparent);
+    color: var(--color-rust);
+    background: color-mix(in oklab, var(--color-rust) 10%, transparent);
+  }
+
+  .work-detail__links {
+    list-style: none;
+    padding: 0;
+    margin-top: 1.25rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .work-detail__links a {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    letter-spacing: 0.04em;
+  }
+
+  .work-detail__back {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--color-ink-muted);
+    letter-spacing: 0.04em;
+  }
+
+  .work-detail__back:hover {
+    color: var(--color-moss-glow);
+  }
+
+  .work-detail__footer {
+    margin-top: 3rem;
+  }
+
+  .work-detail__hero-image {
+    max-width: 64rem;
+    margin: 0 auto 3rem;
+    padding-inline: 1.5rem;
+  }
+
+  .work-detail__hero-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    border: 1px solid var(--color-border);
+    display: block;
+  }
+</style>
+
+<style is:global>
+  .prose h2 {
+    margin-block: 2.5rem 0.75rem;
+    font-size: 1.625rem;
+    font-variation-settings: "opsz" 48, "SOFT" 30;
+  }
+
+  .prose h3 {
+    margin-block: 1.75rem 0.5rem;
+    font-size: 1.25rem;
+    color: var(--color-spore);
+    font-variation-settings: "opsz" 24, "SOFT" 30;
+  }
+
+  .prose p,
+  .prose ul,
+  .prose ol {
+    margin-block: 1rem;
+    color: var(--color-ink-muted);
+    font-size: 1.0625rem;
+    line-height: 1.7;
+  }
+
+  .prose strong {
+    color: var(--color-ink);
+    font-weight: 600;
+  }
+
+  .prose ul,
+  .prose ol {
+    padding-inline-start: 1.5rem;
+  }
+
+  .prose li {
+    margin-block: 0.5rem;
+  }
+
+  .prose li::marker {
+    color: var(--color-moss);
+  }
+
+  .prose a {
+    color: var(--color-ink);
+    border-bottom: 1px solid color-mix(in oklab, var(--color-moss) 50%, transparent);
+    transition: border-color 200ms ease;
+  }
+
+  .prose a:hover {
+    color: var(--color-spore);
+    border-bottom-color: var(--color-rust);
+  }
+
+  .prose code {
+    font-size: 0.875em;
+    background: var(--color-bg-elevated);
+    padding: 0.125rem 0.375rem;
+    border-radius: 4px;
+    color: var(--color-spore);
+    border: 1px solid var(--color-border);
+  }
+
+  .prose blockquote {
+    margin-block: 1.5rem;
+    padding-left: 1.25rem;
+    border-left: 2px solid var(--color-moss);
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    font-style: italic;
+  }
+
+  .prose figure,
+  .prose img {
+    margin-block: 2rem;
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    border: 1px solid var(--color-border);
+    display: block;
+  }
+
+  .prose figure {
+    border: none;
+    border-radius: 0;
+    padding: 0;
+  }
+
+  .prose figure img {
+    margin-block: 0;
+  }
+
+  .prose figcaption {
+    margin-top: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-ink-subtle);
+    text-align: center;
+    letter-spacing: 0.04em;
+  }
+</style>

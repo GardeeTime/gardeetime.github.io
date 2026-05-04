@@ -1,0 +1,315 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../layouts/Base.astro";
+import ContributionGrid from "../components/ContributionGrid.astro";
+import MyceliumNetwork from "../components/MyceliumNetwork.astro";
+import TestimonialsSection from "../components/TestimonialsSection.astro";
+
+const all = await getCollection("work");
+const featured = all
+  .filter((e) => e.data.featured)
+  .sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999));
+---
+
+<Base>
+  <section class="hero">
+    <MyceliumNetwork />
+    <div class="container-prose hero__content">
+      <div class="hero__avatar">
+        <img src="/avatar.png" alt="Adam Gardner" width="96" height="96" />
+      </div>
+      <p class="eyebrow">Director of Product · Backstroke</p>
+      <h1 class="hero__title">Adam Gardner</h1>
+      <p class="hero__lede">
+        Building product at the intersection of AI, marketing, and the workflow customers
+        already live in. Currently shipping <a href="/work/surge/" class="ink-link">Surge</a> &mdash;
+        a predictive content layer for Klaviyo &mdash; alongside a small, fast team.
+      </p>
+
+      <div class="hero__lines">
+        <p class="hero__line">
+          <span class="hero__line-key">Now</span>
+          <span class="hero__line-val">Five months into Backstroke. Building with engineers, learning to ship code with Claude.</span>
+        </p>
+        <p class="hero__line">
+          <span class="hero__line-key">Before</span>
+          <span class="hero__line-val">Six years at Salesloft (Senior PM &rarr; Senior Staff). First PM at Lessonly.</span>
+        </p>
+        <p class="hero__line">
+          <span class="hero__line-key">Off-hours</span>
+          <span class="hero__line-val">Six raised beds, a hydroponic tower, half marathons, and Purdue basketball.</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="featured">
+    <div class="container-wide">
+      <div class="section-head">
+        <p class="eyebrow">Selected work</p>
+        <a href="/work/" class="section-head__link">All work →</a>
+      </div>
+
+      <ul class="featured-list">
+        {featured.map((entry) => (
+          <li class="featured-item">
+            <a href={`/work/${entry.id}/`}>
+              <div class="featured-item__inner">
+                <p class="meta">{entry.data.company}</p>
+                <h3 class="featured-item__title">{entry.data.title}</h3>
+                <p class="featured-item__summary">{entry.data.summary}</p>
+                <div class="featured-item__tags">
+                  {entry.data.tags.slice(0, 3).map((t) => <span class="tag">{t}</span>)}
+                </div>
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <TestimonialsSection />
+
+  <section class="closing">
+    <div class="container-wide">
+      <hr />
+      <div class="closing__grid">
+        <div class="closing__copy">
+          <p class="eyebrow">Lately</p>
+          <p class="closing__lede">
+            I'm a PM who's always built close to the metal. The last year is the first time I've shipped production code &mdash; with Claude Code as a partner, after a decade of leaving the IDE to engineers. The work is faster, the prototypes are real, and the conversations with engineers are sharper for it.
+          </p>
+          <p class="meta closing__cta">
+            <a href="/about/" class="ink-link">More about me</a>
+            <span> · </span>
+            <a href="https://github.com/GardeeTime" target="_blank" rel="noreferrer noopener" class="ink-link">GitHub</a>
+            <span> · </span>
+            <a href="mailto:adamgardner32@gmail.com" class="ink-link">Email</a>
+          </p>
+        </div>
+        <div class="closing__activity">
+          <ContributionGrid />
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    position: relative;
+    padding-top: clamp(3rem, 8vh, 5.5rem);
+    padding-bottom: 3rem;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .hero__content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero__avatar {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 1.75rem;
+    position: relative;
+    box-shadow: 0 0 0 1px var(--color-border-glow), 0 8px 24px -8px color-mix(in oklab, var(--color-moss) 30%, transparent);
+  }
+
+  .hero__avatar::after {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: 50%;
+    border: 1px solid color-mix(in oklab, var(--color-moss) 25%, transparent);
+    pointer-events: none;
+  }
+
+  .hero__avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .hero__title {
+    margin-block: 0.5rem 1.25rem;
+  }
+
+  .hero__lede {
+    font-family: var(--font-serif);
+    font-size: clamp(1.125rem, 1.8vw, 1.375rem);
+    line-height: 1.5;
+    color: var(--color-ink);
+    max-width: 38ch;
+    font-variation-settings: "opsz" 24, "SOFT" 50;
+  }
+
+  .hero__lines {
+    margin-top: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .hero__line {
+    display: grid;
+    grid-template-columns: 7rem 1fr;
+    gap: 1rem;
+    font-size: 0.9375rem;
+    line-height: 1.55;
+  }
+
+  .hero__line-key {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--color-moss);
+    padding-top: 0.25rem;
+  }
+
+  .hero__line-val {
+    color: var(--color-ink-muted);
+  }
+
+  .featured {
+    padding-block: 3rem;
+  }
+
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 1.5rem;
+  }
+
+  .section-head__link {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    color: var(--color-ink-muted);
+  }
+
+  .section-head__link:hover {
+    color: var(--color-moss-glow);
+  }
+
+  .featured-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1px;
+    background: var(--color-border);
+    border: 1px solid var(--color-border);
+  }
+
+  .featured-item {
+    background: var(--color-bg);
+    transition: background 250ms ease;
+  }
+
+  .featured-item:hover {
+    background: var(--color-bg-elevated);
+  }
+
+  .featured-item a {
+    display: block;
+    color: inherit;
+    height: 100%;
+  }
+
+  .featured-item__inner {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    height: 100%;
+  }
+
+  .featured-item__title {
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    font-variation-settings: "opsz" 24, "SOFT" 30;
+    color: var(--color-ink);
+    line-height: 1.25;
+    transition: color 250ms ease;
+  }
+
+  .featured-item:hover .featured-item__title {
+    color: var(--color-spore);
+  }
+
+  .featured-item__summary {
+    font-size: 0.9rem;
+    color: var(--color-ink-muted);
+    line-height: 1.55;
+    flex-grow: 1;
+  }
+
+  .featured-item__tags {
+    display: flex;
+    gap: 0.25rem;
+    flex-wrap: wrap;
+    margin-top: 0.25rem;
+  }
+
+  .closing {
+    padding-block: 3rem;
+  }
+
+  .closing__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2.5rem;
+    margin-top: 2rem;
+  }
+
+  @media (min-width: 880px) {
+    .closing__grid {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+      gap: 3rem;
+      align-items: start;
+    }
+  }
+
+  .closing__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .closing__lede {
+    font-family: var(--font-serif);
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: var(--color-ink-muted);
+    margin-bottom: 0.5rem;
+    font-variation-settings: "opsz" 18, "SOFT" 50;
+    max-width: 38ch;
+  }
+
+  .closing__cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .closing__cta span {
+    color: var(--color-ink-subtle);
+  }
+
+  @media (max-width: 540px) {
+    .hero__line {
+      grid-template-columns: 1fr;
+      gap: 0.125rem;
+    }
+  }
+</style>

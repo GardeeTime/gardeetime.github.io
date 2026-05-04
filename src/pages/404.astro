@@ -1,0 +1,51 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="404 — page not found">
+  <section class="not-found">
+    <div class="container-prose">
+      <p class="eyebrow">404 · spore drifted</p>
+      <h1>This page didn't take root.</h1>
+      <p class="lede">
+        Either the page moved, never existed, or hasn't fruited yet. Try one of these instead:
+      </p>
+      <ul class="links">
+        <li><a href="/" class="ink-link">Home</a></li>
+        <li><a href="/work/" class="ink-link">All work</a></li>
+        <li><a href="/about/" class="ink-link">About</a></li>
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .not-found {
+    padding-top: clamp(4rem, 12vh, 8rem);
+    padding-bottom: 6rem;
+  }
+
+  .not-found h1 {
+    margin-block: 0.75rem 1.25rem;
+  }
+
+  .lede {
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    color: var(--color-ink-muted);
+    line-height: 1.5;
+    max-width: 40ch;
+    margin-bottom: 2rem;
+  }
+
+  .links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+  }
+</style>
