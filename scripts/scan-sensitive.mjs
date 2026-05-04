@@ -49,9 +49,12 @@ const PATTERNS = [
 ];
 
 // Strings that are explicitly OK and should not trip the scanner.
+// Add a literal match here to allowlist a specific occurrence (case-sensitive).
 const ALLOWLIST = new Set([
-  // example: "Backstroke" is the company name, fine to reference broadly
-  // add a literal match here to ignore it
+  // Customer names publicly disclosed in Backstroke's Surge launch announcement
+  // (https://www.backstroke.com/blog/introducing-surge-...). Safe to reference on the portfolio.
+  "Perry Ellis",
+  "Helix Sleep",
 ]);
 
 function listFiles(dir) {
