@@ -10,7 +10,9 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "check:secrets": "node scripts/scan-sensitive.mjs",
+    "prebuild": "node scripts/scan-sensitive.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.2.1",

@@ -1,6 +1,11 @@
-# How to add a work entry
+# Adding content (work entries, testimonials, screenshots)
 
-Each `.md` file in this folder becomes a work entry on the site.
+> **Read [the README's security section](../README.md#-security-first--read-before-adding-anything) first.** Every commit is public.
+> Run `npm run check:secrets` before you commit. The build runs it automatically too.
+
+## Adding a work entry
+
+Each `.md` file in `src/content/work/` becomes a work entry on the site.
 
 ## Frontmatter
 
