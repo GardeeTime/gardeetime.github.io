@@ -1,6 +1,5 @@
 ---
-quote: "Enormous empathy for customers and coworkers, extremely well prepared on every call, and adept at scoping work to get functionality into customers' hands as fast as possible."
+quote: "Adam is a pleasure to work with and has an enormous amount of empathy for our customers and his coworkers. He is dependable and comes extremely well prepared... I know I will get quick, high quality output. He is adept at scoping projects to get functionality to customers as soon as possible and quick to make decisions on direction when we encounter... technical hurdles."
 role: Senior Software Engineer
-company: Salesloft
 order: 3
 ---

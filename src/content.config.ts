@@ -36,7 +36,7 @@ const testimonials = defineCollection({
     quote: z.string(),
     author: z.string().optional(),
     role: z.string(),
-    company: z.string(),
+    company: z.string().optional(),
     context: z.string().optional(),
     order: z.number().optional(),
   }),

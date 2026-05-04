@@ -1,6 +1,5 @@
 ---
-quote: "He does extensive customer interviews and keeps customers first by sharing concise quotes and clips with the team. Adam demonstrates a real bias to action — decisions get made and shipped."
+quote: "Adam is a leader in the Product team. He does extensive interviews with... customers and... shares this knowledge... He keeps customers first... by sharing concise customer quotes and video clips... Adam has demonstrated multiple times his Bias to Action and Focus on results... to identify the next smallest increment of customer value."
 role: Engineering Manager
-company: Salesloft
 order: 2
 ---
