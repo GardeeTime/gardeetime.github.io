@@ -9,6 +9,8 @@ tags: [PM, AI, Shipped]
 status: shipped
 featured: true
 order: 4
+heroImage: ./screenshots/account-research-agent/cover.webp
+heroImageAlt: "Stylized illustration of overlapping document panels with a magnifying glass over a profile, suggesting account research"
 ---
 
 ## The bet

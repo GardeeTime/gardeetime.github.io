@@ -2,13 +2,13 @@
 import Base from "../layouts/Base.astro";
 
 const timeline = [
-  { company: "Backstroke", role: "Director of Product", dates: "Jan 2026 — present", note: "AI-driven product systems for marketers. Predictive content, hero personalization, and Slack-native delivery." },
-  { company: "Salesloft", role: "Senior Staff PM", dates: "Aug 2025 — Jan 2026", note: "AI agent features at enterprise scale." },
-  { company: "Salesloft", role: "Staff PM", dates: "Dec 2022 — Aug 2025", note: "Led discovery and delivery on multiple AI and forecasting initiatives." },
-  { company: "Salesloft", role: "Senior PM", dates: "Mar 2020 — Dec 2022", note: "Shipped revenue-impacting features in a hyper-growth sales engagement platform." },
-  { company: "Lessonly (now Seismic Learning)", role: "Product Manager", dates: "Nov 2016 — Mar 2020", note: "First PM. Took the platform from knowledge transfer into performance — practice, coaching, and learning paths." },
-  { company: "Geofeedia", role: "PM / Business Analyst", dates: "May 2015 — Oct 2016", note: "Started as a BA, became PM. Real-time location-based social intelligence." },
-  { company: "ExactTarget", role: "Slingshot Intern", dates: "May 2014 — Aug 2014", note: "First marketing-tech exposure. The roots of how I think about the email/martech space today." },
+  { company: "Backstroke", brands: [{ src: "/logos/backstroke.png", alt: "Backstroke", href: "https://backstroke.com", wordmark: "Backstroke" }], role: "Director of Product", dates: "Jan 2026 — present", note: "AI-driven product systems for marketers. Predictive content, hero personalization, and Slack-native delivery." },
+  { company: "Salesloft", brands: [{ src: "/logos/salesloft.svg", alt: "Salesloft", href: "https://salesloft.com" }], role: "Senior Staff PM", dates: "Aug 2025 — Jan 2026", note: "AI agent features at enterprise scale." },
+  { company: "Salesloft", brands: [{ src: "/logos/salesloft.svg", alt: "Salesloft", href: "https://salesloft.com" }], role: "Staff PM", dates: "Dec 2022 — Aug 2025", note: "Led discovery and delivery on multiple AI and forecasting initiatives." },
+  { company: "Salesloft", brands: [{ src: "/logos/salesloft.svg", alt: "Salesloft", href: "https://salesloft.com" }], role: "Senior PM", dates: "Mar 2020 — Dec 2022", note: "Shipped revenue-impacting features in a hyper-growth sales engagement platform." },
+  { company: "Lessonly (now Seismic Learning)", brands: [{ src: "/logos/lessonly.png", alt: "Lessonly (now Seismic Learning)" }], role: "Product Manager", dates: "Nov 2016 — Mar 2020", note: "First PM. Took the platform from knowledge transfer into performance — practice, coaching, and learning paths." },
+  { company: "Geofeedia", brands: [{ src: "/logos/geofeedia.png", alt: "Geofeedia" }], role: "PM / Business Analyst", dates: "May 2015 — Oct 2016", note: "Started as a BA, became PM. Real-time location-based social intelligence." },
+  { company: "ExactTarget", brands: [{ src: "/logos/exacttarget.png", alt: "ExactTarget" }, { src: "/logos/salesforce.svg", alt: "Salesforce (acquired ExactTarget)" }], role: "Slingshot Intern", dates: "May 2014 — Aug 2014", note: "First marketing-tech exposure. The roots of how I think about the email/martech space today." },
 ];
 
 const principles = [
@@ -70,7 +70,27 @@ const principles = [
               <span class="meta">{t.dates}</span>
             </div>
             <div class="timeline-row__main">
-              <p class="timeline-row__company">{t.company}</p>
+              <div class="timeline-row__brand" aria-label={t.company}>
+                {t.brands.map((b, i) => (
+                  <>
+                    {i > 0 && <span class="timeline-row__brand-sep" aria-hidden="true">→</span>}
+                    {b.href
+                      ? (
+                        <a class="timeline-row__logo-link" href={b.href} target="_blank" rel="noreferrer noopener" aria-label={`${b.alt} website`}>
+                          <img class="timeline-row__logo" src={b.src} alt={b.alt} loading="lazy" decoding="async" />
+                          {b.wordmark && <span class="timeline-row__wordmark">{b.wordmark}</span>}
+                        </a>
+                      )
+                      : (
+                        <span class="timeline-row__logo-link timeline-row__logo-link--static">
+                          <img class="timeline-row__logo" src={b.src} alt={b.alt} loading="lazy" decoding="async" />
+                          {b.wordmark && <span class="timeline-row__wordmark">{b.wordmark}</span>}
+                        </span>
+                      )
+                    }
+                  </>
+                ))}
+              </div>
               <p class="timeline-row__role">{t.role}</p>
               <p class="timeline-row__note">{t.note}</p>
             </div>
@@ -249,12 +269,66 @@ const principles = [
     padding-top: 0.25rem;
   }
 
-  .timeline-row__company {
+  .timeline-row__brand {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    margin-bottom: 0.5rem;
+    min-height: 1.75rem;
+    flex-wrap: wrap;
+  }
+
+  .timeline-row__logo {
+    flex: none;
+    height: 1.625rem;
+    width: auto;
+    max-width: 7.5rem;
+    object-fit: contain;
+    object-position: left center;
+    filter: brightness(0) invert(1);
+    opacity: 0.78;
+    transition: opacity 160ms ease;
+  }
+
+  .timeline-row__logo-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    line-height: 0;
+  }
+
+  .timeline-row__logo-link--static {
+    cursor: default;
+  }
+
+  .timeline-row__wordmark {
     font-family: var(--font-serif);
     font-size: 1.125rem;
     font-variation-settings: "opsz" 24, "SOFT" 30;
     color: var(--color-ink);
-    margin-bottom: 0.125rem;
+    line-height: 1;
+    opacity: 0.78;
+    transition: opacity 160ms ease;
+  }
+
+  .timeline-row__logo-link:hover .timeline-row__logo,
+  .timeline-row__logo-link:focus-visible .timeline-row__logo,
+  .timeline-row__logo-link:hover .timeline-row__wordmark,
+  .timeline-row__logo-link:focus-visible .timeline-row__wordmark {
+    opacity: 1;
+  }
+
+  a.timeline-row__logo-link:focus-visible {
+    outline: 2px solid var(--color-moss);
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+
+  .timeline-row__brand-sep {
+    color: var(--color-ink-subtle);
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    line-height: 1;
   }
 
   .timeline-row__role {

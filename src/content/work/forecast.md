@@ -8,6 +8,8 @@ summary: "Identified the opportunity by embedding with sales leaders managing $1
 tags: [PM, Shipped, Strategy]
 status: shipped
 order: 16
+heroImage: ./screenshots/forecast/cover.webp
+heroImageAlt: "Salesloft 'Better Forecasting Is Here' launch graphic — beach scene with palm tree"
 ---
 
 ## How I found it

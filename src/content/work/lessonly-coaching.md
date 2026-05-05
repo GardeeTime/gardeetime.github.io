@@ -8,6 +8,8 @@ summary: "Evolved Lessonly from a knowledge-transfer platform into a performance
 tags: [PM, Strategy, Shipped]
 status: shipped
 order: 18
+heroImage: ./screenshots/lessonly-coaching/cover.webp
+heroImageAlt: "Lessonly Sales Coaching guide cover"
 ---
 
 ## The reframe

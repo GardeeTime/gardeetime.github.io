@@ -8,6 +8,8 @@ summary: "Tackled manual prospecting drift with a partner-data integration. Surf
 tags: [PM, AI, Shipped]
 status: shipped
 order: 12
+heroImage: ./screenshots/buyer-id-agent/cover.webp
+heroImageAlt: "ZoomInfo and Salesloft logos paired, marking the partner-data integration"
 ---
 
 ## The friction

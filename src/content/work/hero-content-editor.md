@@ -7,6 +7,8 @@ summary: "Form-based configurator for placing exact brand fonts on hero images. 
 tags: [AI-PM, Eng, Design]
 status: shipped
 order: 5
+heroImage: ./screenshots/hero-content-editor/cover.avif
+heroImageAlt: "Hero Content Editor preview"
 ---
 
 ## The problem

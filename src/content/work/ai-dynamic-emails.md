@@ -8,6 +8,8 @@ summary: "Led the prospecting-pod initiative that brought AI-assisted email comp
 tags: [PM, AI, Shipped]
 status: shipped
 order: 15
+heroImage: ./screenshots/ai-dynamic-emails/cover.webp
+heroImageAlt: "Salesloft AI Dynamic Emails composer modal with sample person, key signal, and generated outreach"
 ---
 
 ## The shape of the bet

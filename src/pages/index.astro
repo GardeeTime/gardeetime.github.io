@@ -4,6 +4,7 @@ import Base from "../layouts/Base.astro";
 import ContributionGrid from "../components/ContributionGrid.astro";
 import MyceliumNetwork from "../components/MyceliumNetwork.astro";
 import TestimonialsSection from "../components/TestimonialsSection.astro";
+import WorkCover from "../components/WorkCover.astro";
 
 const all = await getCollection("work");
 const featured = all
@@ -54,6 +55,17 @@ const featured = all
         {featured.map((entry) => (
           <li class="featured-item">
             <a href={`/work/${entry.id}/`}>
+              <div class="featured-item__cover">
+                <WorkCover
+                  slug={entry.id}
+                  title={entry.data.title}
+                  company={entry.data.company}
+                  status={entry.data.status}
+                  tags={entry.data.tags}
+                  ratio="card"
+                  heroImage={entry.data.heroImage}
+                />
+              </div>
               <div class="featured-item__inner">
                 <p class="meta">{entry.data.company}</p>
                 <h3 class="featured-item__title">{entry.data.title}</h3>
@@ -220,17 +232,28 @@ const featured = all
   }
 
   .featured-item a {
-    display: block;
+    display: flex;
+    flex-direction: column;
     color: inherit;
     height: 100%;
   }
 
+  .featured-item__cover {
+    overflow: hidden;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .featured-item__cover :global(.work-cover) {
+    border-radius: 0;
+    aspect-ratio: 600 / 360;
+  }
+
   .featured-item__inner {
-    padding: 1.5rem;
+    padding: 1.25rem 1.5rem 1.5rem;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    height: 100%;
+    flex-grow: 1;
   }
 
   .featured-item__title {

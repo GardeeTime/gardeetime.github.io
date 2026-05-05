@@ -8,6 +8,8 @@ summary: "Led discovery through delivery on a knowledge surface that pulls produ
 tags: [PM, AI, Shipped]
 status: shipped
 order: 14
+heroImage: ./screenshots/ai-knowledge-library/cover.webp
+heroImageAlt: "AI Knowledge Library interface showing conversational search results"
 ---
 
 ## What it is

@@ -9,6 +9,8 @@ tags: [PM, AI, Shipped]
 status: shipped
 featured: true
 order: 6
+heroImage: ./screenshots/auto-buying-group/cover.webp
+heroImageAlt: "Salesloft deals dashboard with a Buying Group panel listing detected stakeholders and their roles"
 ---
 
 ## The hidden gap

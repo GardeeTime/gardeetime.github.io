@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import Base from "../../layouts/Base.astro";
+import WorkCover from "../../components/WorkCover.astro";
 
 const entries = await getCollection("work");
 const sorted = entries.sort((a, b) => {
@@ -40,16 +41,28 @@ function range(start: string, end?: string) {
         {sorted.map((entry) => (
           <li class="work-item">
             <a href={`/work/${entry.id}/`} class="work-item__link">
-              <div class="work-item__meta">
-                <span class="meta">{entry.data.company}</span>
-                <span class="meta meta--dot">·</span>
-                <span class="meta">{range(entry.data.startDate, entry.data.endDate)}</span>
+              <div class="work-item__cover">
+                <WorkCover
+                  slug={entry.id}
+                  title={entry.data.title}
+                  company={entry.data.company}
+                  status={entry.data.status}
+                  tags={entry.data.tags}
+                  heroImage={entry.data.heroImage}
+                />
               </div>
-              <h2 class="work-item__title">{entry.data.title}</h2>
-              <p class="work-item__summary">{entry.data.summary}</p>
-              <div class="work-item__tags">
-                {entry.data.tags.map((t) => <span class="tag">{t}</span>)}
-                <span class:list={["tag", `tag-${entry.data.status}`]}>{entry.data.status}</span>
+              <div class="work-item__body">
+                <div class="work-item__meta">
+                  <span class="meta">{entry.data.company}</span>
+                  <span class="meta meta--dot">·</span>
+                  <span class="meta">{range(entry.data.startDate, entry.data.endDate)}</span>
+                </div>
+                <h2 class="work-item__title">{entry.data.title}</h2>
+                <p class="work-item__summary">{entry.data.summary}</p>
+                <div class="work-item__tags">
+                  {entry.data.tags.map((t) => <span class="tag">{t}</span>)}
+                  <span class:list={["tag", `tag-${entry.data.status}`]}>{entry.data.status}</span>
+                </div>
               </div>
             </a>
           </li>
@@ -99,10 +112,32 @@ function range(start: string, end?: string) {
   }
 
   .work-item__link {
-    display: block;
+    display: grid;
+    grid-template-columns: minmax(0, 16rem) 1fr;
+    gap: 1.75rem;
     color: inherit;
     padding: 1.75rem 1.5rem;
     text-decoration: none;
+    align-items: start;
+  }
+
+  .work-item__cover {
+    transition: transform 250ms ease, opacity 250ms ease;
+  }
+
+  .work-item__link:hover .work-item__cover {
+    transform: translateY(-2px);
+  }
+
+  .work-item__body {
+    min-width: 0;
+  }
+
+  @media (max-width: 720px) {
+    .work-item__link {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
   }
 
   .work-item__meta {

@@ -9,6 +9,8 @@ tags: [AI-PM, Eng, Shipped, Strategy]
 status: shipped
 featured: true
 order: 2
+heroImage: ./screenshots/posthog/cover.webp
+heroImageAlt: "PostHog mascot hedgehog presenting a bar chart on an easel"
 ---
 
 ## Before this

@@ -7,6 +7,8 @@ summary: "Six-lens audit suite I authored for honest, repeatable handoff reviews
 tags: [AI-PM, Eng, Tooling]
 status: shipped
 order: 6
+heroImage: ./screenshots/feature-audit/cover.png
+heroImageAlt: "Feature audit Claude Code skill output showing numbered issue table"
 ---
 
 ## Why this exists

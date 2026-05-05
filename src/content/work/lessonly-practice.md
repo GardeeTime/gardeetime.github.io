@@ -8,6 +8,8 @@ summary: "Watched in-person sales role-play. Reimagined it digitally with browse
 tags: [PM, Shipped]
 status: shipped
 order: 17
+heroImage: ./screenshots/lessonly-practice/cover.webp
+heroImageAlt: "Lessonly Practice webcam and screen recording interface"
 ---
 
 ## How I found it
