@@ -7,7 +7,7 @@ summary: "The core ML feature scoring hero images per audience cohort. Made the 
 tags: [Strategy, AI-PM, Eng]
 status: shipped
 featured: true
-order: 3
+order: 4
 ---
 
 ## The decision

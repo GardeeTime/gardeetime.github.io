@@ -8,7 +8,7 @@ summary: "Identified that 90%+ of opportunities lacked complete buying-group dat
 tags: [PM, AI, Shipped]
 status: shipped
 featured: true
-order: 6
+order: 7
 heroImage: ./screenshots/auto-buying-group/cover.webp
 heroImageAlt: "Salesloft deals dashboard with a Buying Group panel listing detected stakeholders and their roles"
 ---

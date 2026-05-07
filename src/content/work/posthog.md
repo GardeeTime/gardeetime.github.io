@@ -8,7 +8,7 @@ summary: "Drove Backstroke's first-ever product analytics instrumentation end-to
 tags: [AI-PM, Eng, Shipped, Strategy]
 status: shipped
 featured: true
-order: 2
+order: 3
 heroImage: ./screenshots/posthog/cover.webp
 heroImageAlt: "PostHog mascot hedgehog presenting a bar chart on an easel"
 ---

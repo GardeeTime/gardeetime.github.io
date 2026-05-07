@@ -8,7 +8,7 @@ summary: "Fast-follow to Account Research after early-access feedback. Synthesiz
 tags: [PM, AI, Shipped]
 status: shipped
 featured: true
-order: 5
+order: 6
 ---
 
 ## Why this followed Account Research

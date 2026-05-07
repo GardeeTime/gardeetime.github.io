@@ -8,7 +8,7 @@ summary: "Lead PM on a generative agent that compresses an hour of pre-call acco
 tags: [PM, AI, Shipped]
 status: shipped
 featured: true
-order: 4
+order: 5
 heroImage: ./screenshots/account-research-agent/cover.webp
 heroImageAlt: "Stylized illustration of overlapping document panels with a magnifying glass over a profile, suggesting account research"
 ---

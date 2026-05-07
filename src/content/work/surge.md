@@ -7,7 +7,7 @@ summary: "Predictive hero intelligence for Klaviyo campaigns. Marketers pick the
 tags: [AI-PM, Eng, Shipped, Strategy]
 status: shipped
 featured: true
-order: 1
+order: 2
 heroImage: ./screenshots/surge/surge-cover.avif
 heroImageAlt: "Surge — predictive hero content delivered as a Klaviyo Universal Content block"
 links:
