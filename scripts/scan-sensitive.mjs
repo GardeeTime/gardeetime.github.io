@@ -55,6 +55,10 @@ const ALLOWLIST = new Set([
   // (https://www.backstroke.com/blog/introducing-surge-...). Safe to reference on the portfolio.
   "Perry Ellis",
   "Helix Sleep",
+  // Customer names publicly disclosed in Backstroke's Surge for Flows launch announcement
+  // (https://www.backstroke.com/blog/surge-for-flows-is-live). Safe to reference on the portfolio.
+  "Homeroom",
+  "PSD",
 ]);
 
 function listFiles(dir) {

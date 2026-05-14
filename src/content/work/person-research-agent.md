@@ -9,6 +9,8 @@ tags: [PM, AI, Shipped]
 status: shipped
 featured: true
 order: 6
+heroImage: ./screenshots/person-research-agent/cover.webp
+heroImageAlt: "Person Research Agent — embedded briefing in the rep's prep flow."
 ---
 
 ## Why this followed Account Research

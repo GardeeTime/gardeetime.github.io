@@ -8,6 +8,8 @@ tags: [Strategy, AI-PM, Eng]
 status: shipped
 featured: true
 order: 4
+heroImage: ./screenshots/predictive-hero/cover.png
+heroImageAlt: "MERSEA results — 50% Control vs 50% Backstroke Predicted Hero: 2.2x revenue, 83% higher conversion."
 ---
 
 ## The decision

@@ -9,7 +9,8 @@ import WorkCover from "../components/WorkCover.astro";
 const all = await getCollection("work");
 const featured = all
   .filter((e) => e.data.featured)
-  .sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999));
+  .sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999))
+  .slice(0, 6);
 ---
 
 <Base>
@@ -22,15 +23,15 @@ const featured = all
       <p class="eyebrow">Director of Product · Backstroke</p>
       <h1 class="hero__title">Adam Gardner</h1>
       <p class="hero__lede">
-        Building product at the intersection of AI, marketing, and the workflow customers
-        already live in. Currently shipping <a href="/work/surge/" class="ink-link">Surge</a> &mdash;
-        a predictive content layer for Klaviyo &mdash; alongside a small, fast team.
+        I'm Director of Product at Backstroke. One foot in product leadership;
+        the other in the IDE &mdash; learning to code with Claude and Codex,
+        and getting scrappy alongside the engineers.
       </p>
 
       <div class="hero__lines">
         <p class="hero__line">
           <span class="hero__line-key">Now</span>
-          <span class="hero__line-val">Five months into Backstroke. Building with engineers, learning to ship code with Claude.</span>
+          <span class="hero__line-val">Six months in. Shipping features, breaking things, learning to ship.</span>
         </p>
         <p class="hero__line">
           <span class="hero__line-key">Before</span>
