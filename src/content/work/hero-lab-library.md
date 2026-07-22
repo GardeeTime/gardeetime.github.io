@@ -8,6 +8,8 @@ tags: [AI-PM, Eng, Design, Shipped]
 status: shipped
 featured: false
 order: 8
+heroImage: ./screenshots/hero-lab-library/cover.png
+heroImageAlt: "Hero Lab Library grid of saved hero images, sortable and searchable"
 links:
   - label: "Product update"
     url: "https://www.backstroke.com/product-updates/%F0%9F%97%82%EF%B8%8F-a-home-for-your-hero-lab-assets"

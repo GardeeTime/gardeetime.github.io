@@ -8,6 +8,8 @@ tags: [AI-PM, Eng, Strategy, Shipped]
 status: shipped
 featured: false
 order: 7
+heroImage: ./screenshots/team-management/cover.png
+heroImageAlt: "Backstroke Team settings page listing members, roles, and two-factor status"
 links:
   - label: "Product update"
     url: "https://www.backstroke.com/product-updates/self-serve-auth-user-management"

@@ -8,6 +8,8 @@ tags: [AI-PM, Eng, Design, Shipped]
 status: shipped
 featured: true
 order: 3
+heroImage: ./screenshots/bulk-hero-variants/cover.png
+heroImageAlt: "Bulk Hero Variants panel in Hero Lab, ready to compose variants from base imagery"
 links:
   - label: "Product update"
     url: "https://www.backstroke.com/product-updates/bulk-hero-variants-with-ai-backgrounds-%F0%9F%AA%84"

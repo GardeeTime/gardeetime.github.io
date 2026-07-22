@@ -11,15 +11,32 @@ order: 2
 links:
   - label: "Product update"
     url: "https://www.backstroke.com/product-updates/backstroke-mcp-(early-access)"
+  - label: "MCP docs"
+    url: "https://headless.backstroke.com/"
 ---
+
+```
+.+###############+.
+######*##**########
+######=:.==--######      ...               :-           .               ::                 =**:  -**-  .=***=.  ****++:
+#######=:##*.*#####     .#==*-  :--.  .--: =*  :: :--:.=#--.:-::- .--:  ++  :: .--:        *@%# .%%@= =@*:.:##. @%::-%@:
+#####*-----.-######     .#+=#= :-:-#.:#::- =*-*= :#-:- -#-:.:+#=::#-:+* +*-*- =*::*=       *@=@-+@=@= %@.       @@==+@%.
+#######+=### *#####     .#:.-#.=+==#:=*    =#+*.  :=*+ :#.   ++  -#  :# +*++. +*===-       *@.%#@*-@= #@:   ==. @%---:
+#####*-::---=######     .#+++= ++=+*:.++++.-* :*-.++++  +++.=**+  =++*- =+ :*-.++++        *@.-@@.-@= .*%*+#@+  @%
+###################                                                                        ..  ..  ..    ::.    ..
+=*-=============-*=
+ :*#############*-
+```
 
 ## What it does
 
-Backstroke MCP connects any MCP-compatible AI assistant — Claude, or others — directly to Backstroke's prediction models. Subject lines, hero recommendations, and content predictions are now reachable right inside the assistant a marketer already uses, instead of only inside our own UI. Sign in once; from then on the assistant can call Backstroke's tools whenever asked, and anything that writes back into the customer's email platform pauses for explicit approval first.
+Backstroke MCP connects any MCP-compatible AI assistant — Claude today, others next — directly to Backstroke's prediction models: subject lines, hero scoring, and campaign content, all reachable right inside the assistant a marketer already uses. Sign in once with OAuth; from then on the assistant can call Backstroke's tools whenever asked, and every new tool that ships appears automatically, with no reinstall or reconnect.
+
+Tools split into two groups. Read-only tools — `predict_subject_lines`, `predict_subject_lines_for_my_audience`, `read_campaign_content`, `score_hero_generic`, `score_hero_for_my_audience` — are always allowed and never touch a customer's systems. Write tools, like `push_subject_lines_to_klaviyo`, ask for explicit approval every single time and only ever create drafts for review. Nothing sends on its own.
 
 ## The bet
 
-Most marketing MCP connectors give an assistant read access to a customer's own account data. Backstroke's bet is different: the value isn't read access to your account, it's a prediction your account can't produce on its own — learned from real email outcomes across 10,000 brands. The assistant is a research surface, not an unsupervised actor.
+Most marketing MCP connectors give an assistant read access to a customer's own account data. Backstroke's bet is different: subject lines are *generated* from patterns learned across 10,000 brands, but heroes are *scored* — candidate images ranked against a model of the customer's actual audience, something a generic generator can't do because it has no read on that list. The assistant proposes; the customer commits, with every write pausing for approval and nothing retained beyond answering the question asked.
 
 ## What I drove
 
@@ -29,4 +46,4 @@ From there I handed the production build to an engineer and our fractional CTO, 
 
 ## Status
 
-Shipped as an Early Access release, June 2026.
+Shipped as a Customer Preview, rolling out to Backstroke customers first, June 2026. SOC 2 Type II compliant. Roadmap ahead: the full hero workflow (score → generate → activate) end-to-end, and connecting assistants beyond Claude.
