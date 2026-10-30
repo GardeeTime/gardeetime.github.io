@@ -8,6 +8,8 @@ tags: [AI-PM, Eng, Strategy, Design, Shipped]
 status: shipped
 featured: true
 order: 1
+heroImage: ./screenshots/creative-loops/cover.jpg
+heroImageAlt: "Campaign brief with a Creative Loops set attached as the hero: 4 images across 12 cohorts"
 links:
   - label: "Beta announcement"
     url: "https://www.backstroke.com/product-updates/creative-loops-enters-beta"
@@ -18,6 +20,8 @@ links:
 ## What it does
 
 Start with the hero you'd normally send. Creative Loops uses your product, your copy, and your brand's style to generate new candidates, screens them for quality, and scores them against your original for each audience cohort. Each round builds on what scored well in the last one. You can mix up to 12 of your own photos with generated backgrounds, review which image goes to which audience, and then save the winning set, push it to Klaviyo as a block, or (since October) drop it straight into a draft campaign with its audience assignments intact.
+
+![Start a Creative Loop panel: choose generated backgrounds or mix in your own photos, then start the loop](./screenshots/creative-loops/start-a-loop.jpg)
 
 You get an email when a run finishes. The loop does the exploring; you make the call.
 

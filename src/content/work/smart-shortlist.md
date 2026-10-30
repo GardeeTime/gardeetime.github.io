@@ -8,6 +8,8 @@ tags: [AI-PM, Eng, Ops, Shipped]
 status: shipped
 featured: false
 order: 4
+heroImage: ./screenshots/smart-shortlist/cover.png
+heroImageAlt: "Smart Shortlist pre-selecting 85 of 108 hero variants, with quality notes on flagged tiles"
 links:
   - label: "Product update"
     url: "https://www.backstroke.com/product-updates/%E2%9C%A8-smart-shortlist"

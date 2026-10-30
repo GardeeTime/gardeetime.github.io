@@ -8,6 +8,8 @@ tags: [AI-PM, Eng, Strategy, Shipped]
 status: shipped
 featured: true
 order: 1
+heroImage: ./screenshots/control-verdict/cover.jpg
+heroImageAlt: "Hero Lab verdict panel reading 'One image beat your control,' with the control and the winning image side by side"
 links:
   - label: "Hero Lab update"
     url: "https://www.backstroke.com/product-updates/%F0%9F%8F%81-hero-lab-control-verdict"
@@ -25,6 +27,8 @@ Instead of a leaderboard, Hero Lab and Surge return one of four verdicts:
 - **One image beat the control.** A single image wins outright.
 - **The control is predicted to win.** Keep what you have.
 - **No clear winner yet.** The differences are too close to call.
+
+![Hero Lab spec panel with a control image set: "Sets the bar. It can't win a cohort."](./screenshots/control-verdict/control-spec.jpg)
 
 When the control isn't beaten, Surge doesn't build the Klaviyo block and explains why. Results too close to call get their own group instead of being dressed up as a winner.
 

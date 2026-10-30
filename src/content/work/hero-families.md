@@ -8,6 +8,8 @@ tags: [AI-PM, Eng, Design, Shipped]
 status: shipped
 featured: false
 order: 4
+heroImage: ./screenshots/hero-families/cover.png
+heroImageAlt: "Generate assets modal with creative families: Styled product, Brand color, Texture, Environment, Worn / in use, Lifestyle moment"
 links:
   - label: "Product update"
     url: "https://www.backstroke.com/product-updates/%F0%9F%8E%A8-hero-families"
