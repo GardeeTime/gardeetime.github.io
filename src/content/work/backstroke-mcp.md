@@ -13,6 +13,8 @@ links:
     url: "https://www.backstroke.com/product-updates/backstroke-mcp-(early-access)"
   - label: "MCP docs"
     url: "https://headless.backstroke.com/"
+  - label: "Claude plugin"
+    url: "https://www.backstroke.com/product-updates/%F0%9F%A7%A9-backstroke-plugin-for-claude-code-desktop"
 ---
 
 ```
@@ -46,4 +48,6 @@ From there I handed the production build to an engineer and our fractional CTO, 
 
 ## Status
 
-Shipped as a Customer Preview, rolling out to Backstroke customers first, June 2026. SOC 2 Type II compliant. Roadmap ahead: the full hero workflow (score → generate → activate) end-to-end, and connecting assistants beyond Claude.
+Shipped as a Customer Preview, rolling out to Backstroke customers first, June 2026. SOC 2 Type II compliant.
+
+In August 2026 the MCP was packaged as a plugin for Claude Code and Claude Desktop that installs with two commands. It ships with ready-made recipes (A/B subject lines per audience cohort, pick a winning hero and hand it to the ESP, run a quick image face-off), so the assistant runs a whole job end to end instead of working out the tool sequence on its own.
