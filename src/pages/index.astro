@@ -1,339 +1,264 @@
 ---
 import { getCollection } from "astro:content";
-import Base from "../layouts/Base.astro";
-import ContributionGrid from "../components/ContributionGrid.astro";
-import MyceliumNetwork from "../components/MyceliumNetwork.astro";
-import TestimonialsSection from "../components/TestimonialsSection.astro";
-import WorkCover from "../components/WorkCover.astro";
+import Desktop from "../layouts/Desktop.astro";
+import SeedPacket from "../components/garden/SeedPacket.astro";
+import WateringLog from "../components/garden/WateringLog.astro";
 
-const all = await getCollection("work");
-const featured = all
+const work = await getCollection("work");
+const featured = work
   .filter((e) => e.data.featured)
   .sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999))
   .slice(0, 6);
+
+const testimonials = (await getCollection("testimonials")).sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999));
+const noteTints = ["#fbe6b0", "#f8faf1", "#f6d3c8", "#dceccd"];
+
+const stakes = [
+  { key: "Now", value: "Ten months in at Backstroke. Shipping features, breaking things, learning to ship." },
+  { key: "Before", value: "Six years at Salesloft (Senior PM to Senior Staff). First PM at Lessonly." },
+  { key: "Off-hours", value: "Six raised beds, a hydroponic tower, half marathons, and Purdue basketball." },
+];
 ---
 
-<Base>
-  <section class="hero">
-    <MyceliumNetwork />
-    <div class="container-prose hero__content">
-      <div class="hero__avatar">
-        <img src="/avatar.png" alt="Adam Gardner" width="96" height="96" />
-      </div>
-      <p class="eyebrow">Director of Product · Backstroke</p>
-      <h1 class="hero__title">Adam Gardner</h1>
-      <p class="hero__lede">
-        I'm Director of Product at Backstroke. One foot in product leadership;
-        the other in the IDE &mdash; learning to code with Claude and Codex,
-        and getting scrappy alongside the engineers.
+<Desktop windowTitle="Welcome to the garden" current="home">
+  <section class="intro">
+    <div class="intro__copy">
+      <img class="intro__avatar" src="/avatar.png" alt="Adam Gardner" width="88" height="88" />
+      <p class="kicker">Director of Product at Backstroke</p>
+      <h1>Adam Gardner</h1>
+      <p class="lede">
+        One foot in product leadership; the other in the IDE, learning to code with Claude and Codex and
+        getting scrappy alongside the engineers.
       </p>
-
-      <div class="hero__lines">
-        <p class="hero__line">
-          <span class="hero__line-key">Now</span>
-          <span class="hero__line-val">Ten months in. Shipping features, breaking things, learning to ship.</span>
-        </p>
-        <p class="hero__line">
-          <span class="hero__line-key">Before</span>
-          <span class="hero__line-val">Six years at Salesloft (Senior PM &rarr; Senior Staff). First PM at Lessonly.</span>
-        </p>
-        <p class="hero__line">
-          <span class="hero__line-key">Off-hours</span>
-          <span class="hero__line-val">Six raised beds, a hydroponic tower, half marathons, and Purdue basketball.</span>
-        </p>
+      <div class="intro__actions">
+        <a class="btn" href="/work/">See the work</a>
+        <a class="btn btn--plain" href="/garden/">Walk the project map</a>
       </div>
+    </div>
+    <ul class="stakes">
+      {stakes.map((s, i) => (
+        <li class="stake" style={`--tilt:${[-1.5, 1, -0.5][i]}deg`}>
+          <span class="stake__key">{s.key}</span>
+          <span class="stake__val">{s.value}</span>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="block" aria-labelledby="season">
+    <div class="block__head">
+      <h2 id="season">In season</h2>
+      <a href="/work/">All {work.length} projects</a>
+    </div>
+    <ul class="packets">
+      {featured.map((entry) => (
+        <li><SeedPacket entry={entry} /></li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="block" id="kind-words" aria-labelledby="kind-words-h">
+    <div class="block__head">
+      <h2 id="kind-words-h">Kind words</h2>
+      <p class="block__sub">From people I've built with.</p>
+    </div>
+    <div class="notes">
+      {testimonials.map((t, i) => (
+        <figure class="sticky" style={`--tint:${noteTints[i % noteTints.length]};--tilt:${[-1.2, 0.8, -0.4, 1.3, -0.9, 0.5, -1.4][i % 7]}deg`}>
+          <blockquote>{t.data.quote}</blockquote>
+          <figcaption>{t.data.author ? `${t.data.author}, ` : ""}{t.data.role}</figcaption>
+        </figure>
+      ))}
     </div>
   </section>
 
-  <section class="featured">
-    <div class="container-wide">
-      <div class="section-head">
-        <p class="eyebrow">Selected work</p>
-        <a href="/work/" class="section-head__link">All work →</a>
-      </div>
-
-      <ul class="featured-list">
-        {featured.map((entry) => (
-          <li class="featured-item">
-            <a href={`/work/${entry.id}/`}>
-              <div class="featured-item__cover">
-                <WorkCover
-                  slug={entry.id}
-                  title={entry.data.title}
-                  company={entry.data.company}
-                  status={entry.data.status}
-                  tags={entry.data.tags}
-                  ratio="card"
-                  heroImage={entry.data.heroImage}
-                />
-              </div>
-              <div class="featured-item__inner">
-                <p class="meta">{entry.data.company}</p>
-                <h3 class="featured-item__title">{entry.data.title}</h3>
-                <p class="featured-item__summary">{entry.data.summary}</p>
-                <div class="featured-item__tags">
-                  {entry.data.tags.slice(0, 3).map((t) => <span class="tag">{t}</span>)}
-                </div>
-              </div>
-            </a>
-          </li>
-        ))}
-      </ul>
+  <section class="block lately" aria-labelledby="lately">
+    <div class="lately__copy">
+      <h2 id="lately">Watering log</h2>
+      <p class="lede">
+        I'm a PM who's always built close to the metal. The last year is the first time I've shipped production code,
+        with Claude Code as a partner, after a decade of leaving the IDE to engineers. The work is faster, the prototypes
+        are real, and the conversations with engineers are sharper for it.
+      </p>
     </div>
+    <WateringLog />
   </section>
-
-  <TestimonialsSection />
-
-  <section class="closing">
-    <div class="container-wide">
-      <hr />
-      <div class="closing__grid">
-        <div class="closing__copy">
-          <p class="eyebrow">Lately</p>
-          <p class="closing__lede">
-            I'm a PM who's always built close to the metal. The last year is the first time I've shipped production code &mdash; with Claude Code as a partner, after a decade of leaving the IDE to engineers. The work is faster, the prototypes are real, and the conversations with engineers are sharper for it.
-          </p>
-          <p class="meta closing__cta">
-            <a href="/about/" class="ink-link">More about me</a>
-            <span> · </span>
-            <a href="https://github.com/GardeeTime" target="_blank" rel="noreferrer noopener" class="ink-link">GitHub</a>
-            <span> · </span>
-            <a href="mailto:adamgardner32@gmail.com" class="ink-link">Email</a>
-          </p>
-        </div>
-        <div class="closing__activity">
-          <ContributionGrid />
-        </div>
-      </div>
-    </div>
-  </section>
-</Base>
+</Desktop>
 
 <style>
-  .hero {
-    position: relative;
-    padding-top: clamp(3rem, 8vh, 5.5rem);
-    padding-bottom: 3rem;
-    overflow: hidden;
-    isolation: isolate;
-  }
-
-  .hero__content {
-    position: relative;
-    z-index: 1;
-  }
-
-  .hero__avatar {
-    width: 96px;
-    height: 96px;
-    border-radius: 50%;
-    overflow: hidden;
-    margin-bottom: 1.75rem;
-    position: relative;
-    box-shadow: 0 0 0 1px var(--color-border-glow), 0 8px 24px -8px color-mix(in oklab, var(--color-moss) 30%, transparent);
-  }
-
-  .hero__avatar::after {
-    content: "";
-    position: absolute;
-    inset: -2px;
-    border-radius: 50%;
-    border: 1px solid color-mix(in oklab, var(--color-moss) 25%, transparent);
-    pointer-events: none;
-  }
-
-  .hero__avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  .hero__title {
-    margin-block: 0.5rem 1.25rem;
-  }
-
-  .hero__lede {
-    font-family: var(--font-serif);
-    font-size: clamp(1.125rem, 1.8vw, 1.375rem);
-    line-height: 1.5;
-    color: var(--color-ink);
-    max-width: 38ch;
-    font-variation-settings: "opsz" 24, "SOFT" 50;
-  }
-
-  .hero__lines {
-    margin-top: 2.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .hero__line {
+  .intro {
     display: grid;
-    grid-template-columns: 7rem 1fr;
-    gap: 1rem;
-    font-size: 0.9375rem;
-    line-height: 1.55;
-  }
-
-  .hero__line-key {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.16em;
-    color: var(--color-moss);
-    padding-top: 0.25rem;
-  }
-
-  .hero__line-val {
-    color: var(--color-ink-muted);
-  }
-
-  .featured {
-    padding-block: 3rem;
-  }
-
-  .section-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    margin-bottom: 1.5rem;
-  }
-
-  .section-head__link {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    letter-spacing: 0.06em;
-    color: var(--color-ink-muted);
-  }
-
-  .section-head__link:hover {
-    color: var(--color-moss-glow);
-  }
-
-  .featured-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1px;
-    background: var(--color-border);
-    border: 1px solid var(--color-border);
-  }
-
-  .featured-item {
-    background: var(--color-bg);
-    transition: background 250ms ease;
-  }
-
-  .featured-item:hover {
-    background: var(--color-bg-elevated);
-  }
-
-  .featured-item a {
-    display: flex;
-    flex-direction: column;
-    color: inherit;
-    height: 100%;
-  }
-
-  .featured-item__cover {
-    overflow: hidden;
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .featured-item__cover :global(.work-cover) {
-    border-radius: 0;
-    aspect-ratio: 600 / 360;
-  }
-
-  .featured-item__inner {
-    padding: 1.25rem 1.5rem 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    flex-grow: 1;
-  }
-
-  .featured-item__title {
-    font-family: var(--font-serif);
-    font-size: 1.25rem;
-    font-variation-settings: "opsz" 24, "SOFT" 30;
-    color: var(--color-ink);
-    line-height: 1.25;
-    transition: color 250ms ease;
-  }
-
-  .featured-item:hover .featured-item__title {
-    color: var(--color-spore);
-  }
-
-  .featured-item__summary {
-    font-size: 0.9rem;
-    color: var(--color-ink-muted);
-    line-height: 1.55;
-    flex-grow: 1;
-  }
-
-  .featured-item__tags {
-    display: flex;
-    gap: 0.25rem;
-    flex-wrap: wrap;
-    margin-top: 0.25rem;
-  }
-
-  .closing {
-    padding-block: 3rem;
-  }
-
-  .closing__grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 2.5rem;
-    margin-top: 2rem;
-  }
-
-  @media (min-width: 880px) {
-    .closing__grid {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
-      gap: 3rem;
-      align-items: start;
-    }
-  }
-
-  .closing__copy {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .closing__lede {
-    font-family: var(--font-serif);
-    font-size: 1.125rem;
-    line-height: 1.6;
-    color: var(--color-ink-muted);
-    margin-bottom: 0.5rem;
-    font-variation-settings: "opsz" 18, "SOFT" 50;
-    max-width: 38ch;
-  }
-
-  .closing__cta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    gap: clamp(2rem, 5vw, 4rem);
     align-items: center;
   }
 
-  .closing__cta span {
-    color: var(--color-ink-subtle);
+  .intro__avatar {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    border: 1.5px solid var(--color-kale);
+    box-shadow: 0 0 0 5px var(--color-chard);
+    margin-bottom: 1.25rem;
   }
 
-  @media (max-width: 540px) {
-    .hero__line {
+  .intro h1 {
+    margin: 0.35rem 0 1rem;
+    font-size: clamp(2.75rem, 6vw, 4.75rem);
+    font-weight: 800;
+    font-variation-settings: "opsz" 96, "wdth" 82;
+    letter-spacing: -0.035em;
+  }
+
+  .intro__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1.75rem;
+  }
+
+  .stakes {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1.1rem;
+  }
+
+  .stake {
+    position: relative;
+    display: grid;
+    gap: 0.2rem;
+    padding: 0.85rem 1.25rem 0.9rem;
+    background: #e9d3b0;
+    border: 1.5px solid var(--color-kale);
+    border-radius: 4px;
+    transform: rotate(var(--tilt));
+    box-shadow: 0 3px 0 var(--color-cedar-dark);
+  }
+
+  .stake::before,
+  .stake::after {
+    content: "";
+    position: absolute;
+    top: 0.5rem;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-cedar-dark);
+  }
+
+  .stake::before {
+    left: 0.5rem;
+  }
+
+  .stake::after {
+    right: 0.5rem;
+  }
+
+  .stake__key {
+    font-weight: 750;
+    font-size: 0.85rem;
+    color: var(--color-cedar-dark);
+  }
+
+  .stake__val {
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+
+  .block {
+    margin-top: clamp(3.5rem, 8vw, 5.5rem);
+  }
+
+  .block__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .block__head h2 {
+    margin: 0;
+  }
+
+  .block__head a {
+    font-weight: 600;
+  }
+
+  .block__sub {
+    margin: 0;
+    color: var(--color-kale-soft);
+  }
+
+  .packets {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem 1.25rem;
+  }
+
+  .notes {
+    columns: 3 250px;
+    column-gap: 1.25rem;
+  }
+
+  .sticky {
+    break-inside: avoid;
+    margin: 0 0 1.25rem;
+    padding: 1.1rem 1.15rem 1rem;
+    background: var(--tint);
+    border: 1.5px solid var(--color-kale);
+    border-radius: 3px;
+    transform: rotate(var(--tilt));
+    box-shadow: 0 10px 18px -12px rgb(30 43 27 / 0.6);
+  }
+
+  .sticky blockquote {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    line-height: 1.55;
+    font-variation-settings: "opsz" 14, "SOFT" 60;
+  }
+
+  .sticky figcaption {
+    margin-top: 0.85rem;
+    font-size: 0.8rem;
+    font-weight: 650;
+    color: var(--color-kale-soft);
+  }
+
+  .lately {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: start;
+  }
+
+  .lately__copy h2 {
+    margin-top: 0;
+  }
+
+  .lately .lede {
+    font-size: 1.1rem;
+  }
+
+  @media (max-width: 860px) {
+    .intro,
+    .lately {
       grid-template-columns: 1fr;
-      gap: 0.125rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .stake,
+    .sticky {
+      transform: none;
     }
   }
 </style>

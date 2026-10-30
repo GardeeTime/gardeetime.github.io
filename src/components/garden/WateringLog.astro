@@ -1,0 +1,119 @@
+---
+// GitHub contributions, fetched at build time and drawn as a watering calendar.
+const username = "GardeeTime";
+
+interface Cell {
+  date: string;
+  level: number;
+}
+
+let weeks: Cell[][] = [];
+let total: number | null = null;
+
+try {
+  const res = await fetch(`https://github.com/users/${username}/contributions`, {
+    headers: { "User-Agent": "gardeetime-site/1.0" },
+  });
+  if (res.ok) {
+    const html = await res.text();
+    const cellRegex = /<td[^>]*data-date="(\d{4}-\d{2}-\d{2})"[^>]*data-level="(\d)"[^>]*>/g;
+    const cells: Cell[] = [];
+    let m: RegExpExecArray | null;
+    while ((m = cellRegex.exec(html))) cells.push({ date: m[1], level: Number(m[2]) });
+    cells.sort((a, b) => a.date.localeCompare(b.date));
+    const byWeek = new Map<string, Cell[]>();
+    for (const c of cells) {
+      const d = new Date(c.date + "T00:00:00Z");
+      d.setUTCDate(d.getUTCDate() - d.getUTCDay());
+      const key = d.toISOString().slice(0, 10);
+      byWeek.set(key, [...(byWeek.get(key) ?? []), c]);
+    }
+    weeks = [...byWeek.keys()].sort().map((k) => byWeek.get(k)!);
+    const totalMatch = html.match(/([\d,]+)\s+contribution/);
+    if (totalMatch) total = Number(totalMatch[1].replace(/,/g, ""));
+  }
+} catch {
+  weeks = [];
+}
+
+const size = 11;
+const gap = 3;
+const width = Math.max(1, weeks.length) * (size + gap);
+const height = 7 * (size + gap);
+const fills = ["#e7ecd9", "#c3dc95", "#8dbf56", "#5f8f3b", "#335f22"];
+---
+
+<figure class="water">
+  <figcaption class="water__cap">
+    {total !== null ? `${total.toLocaleString("en-US")} GitHub contributions in the last year` : "GitHub activity refreshes when the site rebuilds"}
+  </figcaption>
+  {weeks.length > 0 && (
+    <div class="water__scroll">
+      <svg viewBox={`0 0 ${width} ${height}`} width={width} height={height} role="img" aria-label={`${total ?? "Recent"} GitHub contributions in the last year`}>
+        {weeks.map((week, wi) =>
+          week.map((c) => (
+            <rect
+              x={wi * (size + gap)}
+              y={new Date(c.date + "T00:00:00Z").getUTCDay() * (size + gap)}
+              width={size}
+              height={size}
+              rx="3"
+              fill={fills[c.level] ?? fills[0]}
+              stroke="#1e2b1b"
+              stroke-opacity={c.level > 0 ? 0.35 : 0.12}
+            />
+          ))
+        )}
+      </svg>
+    </div>
+  )}
+  <p class="water__legend" aria-hidden="true">
+    Dry
+    {fills.map((f) => <span style={`background:${f}`} />)}
+    Soaked
+  </p>
+</figure>
+
+<style>
+  .water {
+    margin: 0;
+  }
+
+  .water__cap {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-kale-soft);
+    margin-bottom: 0.6rem;
+  }
+
+  .water__scroll {
+    overflow-x: auto;
+    padding: 0.75rem;
+    background: var(--color-paper);
+    border: 1.5px solid var(--color-kale);
+    border-radius: 10px;
+    direction: rtl;
+  }
+
+  .water__scroll svg {
+    direction: ltr;
+    display: block;
+  }
+
+  .water__legend {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.3rem;
+    margin: 0.5rem 0 0;
+    font-size: 0.78rem;
+    color: var(--color-kale-faint);
+  }
+
+  .water__legend span {
+    width: 11px;
+    height: 11px;
+    border-radius: 3px;
+    border: 1px solid rgb(30 43 27 / 0.3);
+  }
+</style>

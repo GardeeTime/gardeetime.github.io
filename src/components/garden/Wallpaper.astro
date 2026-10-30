@@ -1,0 +1,188 @@
+---
+/*
+ * Top-down garden wallpaper: six raised beds on a gravel yard inside a mowed
+ * lawn, plus a hydroponic tower. Built at render time from a fixed seed so it
+ * never changes between deploys.
+ */
+const W = 1600;
+const H = 1000;
+
+function makeRng(seed: number) {
+  let s = seed >>> 0;
+  return () => {
+    s = (s * 1664525 + 1013904223) >>> 0;
+    return s / 0x100000000;
+  };
+}
+const rng = makeRng(0x6761_7264);
+const r = (a: number, b: number) => a + rng() * (b - a);
+const pick = <T,>(xs: T[]) => xs[Math.floor(rng() * xs.length)];
+
+const K = "#1e2b1b";
+const greens = ["#5f8f3b", "#6f9f45", "#4f7f30", "#7fb04a"];
+const shapes: string[] = [];
+const add = (s: string) => shapes.push(s);
+
+const blob = (cx: number, cy: number, rad: number, fill: string, sw = 2) =>
+  `<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="${rad.toFixed(1)}" fill="${fill}" stroke="${K}" stroke-width="${sw}"/>`;
+
+function leafCluster(cx: number, cy: number, size: number, palette = greens) {
+  const n = 5 + Math.floor(rng() * 3);
+  for (let i = 0; i < n; i++) {
+    const a = (i / n) * Math.PI * 2 + r(-0.3, 0.3);
+    add(blob(cx + Math.cos(a) * size * 0.45, cy + Math.sin(a) * size * 0.45, size * r(0.42, 0.55), pick(palette)));
+  }
+  add(blob(cx, cy, size * 0.45, pick(palette)));
+}
+
+type Bed = { x: number; y: number; w: number; h: number; crop: string };
+const beds: Bed[] = [
+  { x: 150, y: 150, w: 380, h: 250, crop: "tomato" },
+  { x: 610, y: 150, w: 380, h: 250, crop: "lettuce" },
+  { x: 1070, y: 150, w: 380, h: 250, crop: "carrot" },
+  { x: 150, y: 600, w: 380, h: 250, crop: "squash" },
+  { x: 610, y: 600, w: 380, h: 250, crop: "pea" },
+  { x: 1070, y: 600, w: 380, h: 250, crop: "kale" },
+];
+
+for (const b of beds) {
+  const t = 18;
+  add(`<rect x="${b.x + 6}" y="${b.y + 8}" width="${b.w}" height="${b.h}" rx="4" fill="${K}" opacity=".22"/>`);
+  add(`<rect x="${b.x}" y="${b.y}" width="${b.w}" height="${b.h}" rx="4" fill="#a87c55" stroke="${K}" stroke-width="3"/>`);
+  add(`<rect x="${b.x + t}" y="${b.y + t}" width="${b.w - t * 2}" height="${b.h - t * 2}" fill="url(#soil)" stroke="${K}" stroke-width="2.5"/>`);
+  for (const sx of [b.x + b.w / 2]) {
+    add(`<path d="M${sx} ${b.y}v${t}M${sx} ${b.y + b.h - t}v${t}" stroke="${K}" stroke-width="2"/>`);
+  }
+  for (const [px, py] of [[b.x, b.y], [b.x + b.w - 22, b.y], [b.x, b.y + b.h - 22], [b.x + b.w - 22, b.y + b.h - 22]]) {
+    add(`<rect x="${px}" y="${py}" width="22" height="22" fill="#6f4f33" stroke="${K}" stroke-width="2.5"/>`);
+  }
+
+  const ix = b.x + t + 12, iy = b.y + t + 12, iw = b.w - t * 2 - 24, ih = b.h - t * 2 - 24;
+  if (b.crop === "tomato") {
+    for (let row = 0; row < 2; row++)
+      for (let col = 0; col < 3; col++) {
+        const cx = ix + iw * (col + 0.5) / 3 + r(-8, 8);
+        const cy = iy + ih * (row + 0.5) / 2 + r(-6, 6);
+        leafCluster(cx, cy, 46);
+        for (let f = 0; f < 4; f++) add(blob(cx + r(-26, 26), cy + r(-22, 22), r(6, 9), pick(["#d8432a", "#e55a33", "#c23a22"])));
+      }
+  } else if (b.crop === "lettuce") {
+    for (let row = 0; row < 3; row++)
+      for (let col = 0; col < 6; col++) {
+        const cx = ix + iw * (col + 0.5) / 6;
+        const cy = iy + ih * (row + 0.5) / 3;
+        const tone = pick([["#8dbf56", "#b8dc7f"], ["#7a2f4f", "#b5577a"], ["#6f9f45", "#a9d36e"]]);
+        add(blob(cx, cy, 22, tone[0]));
+        add(blob(cx, cy, 13, tone[1], 1.6));
+        add(blob(cx, cy, 5, tone[0], 1.2));
+      }
+  } else if (b.crop === "carrot") {
+    for (let row = 0; row < 5; row++) {
+      const cy = iy + ih * (row + 0.5) / 5;
+      for (let col = 0; col < 12; col++) {
+        const cx = ix + iw * (col + 0.5) / 12 + r(-3, 3);
+        let d = "";
+        for (let k = 0; k < 7; k++) {
+          const a = (k / 7) * Math.PI * 2 + r(-0.2, 0.2);
+          const len = r(9, 14);
+          d += `M${cx.toFixed(1)} ${cy.toFixed(1)}l${(Math.cos(a) * len).toFixed(1)} ${(Math.sin(a) * len).toFixed(1)}`;
+        }
+        add(`<path d="${d}" stroke="#7fb04a" stroke-width="3" stroke-linecap="round"/>`);
+        add(`<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="3" fill="#ee8a2a" stroke="${K}" stroke-width="1.2"/>`);
+      }
+    }
+  } else if (b.crop === "squash") {
+    for (const [fx, fy] of [[0.28, 0.45], [0.72, 0.55]]) {
+      const cx = ix + iw * fx, cy = iy + ih * fy;
+      for (let k = 0; k < 6; k++) {
+        const a = (k / 6) * Math.PI * 2 + r(-0.2, 0.2);
+        const lx = cx + Math.cos(a) * 40, ly = cy + Math.sin(a) * 34;
+        add(blob(lx, ly, r(28, 34), pick(greens)));
+        add(`<path d="M${lx.toFixed(1)} ${ly.toFixed(1)}l${(Math.cos(a) * 20).toFixed(1)} ${(Math.sin(a) * 20).toFixed(1)}" stroke="#a9d36e" stroke-width="2"/>`);
+      }
+      add(`<ellipse cx="${(cx + 22).toFixed(1)}" cy="${(cy + 14).toFixed(1)}" rx="20" ry="13" fill="#f3b63f" stroke="${K}" stroke-width="2.2"/>`);
+      add(blob(cx - 30, cy - 26, 8, "#f6c84e"));
+    }
+  } else if (b.crop === "pea") {
+    const ty = iy + ih / 2;
+    add(`<path d="M${ix} ${ty}H${ix + iw}" stroke="#6f4f33" stroke-width="5" stroke-linecap="round"/>`);
+    for (let k = 0; k <= 6; k++) add(blob(ix + (iw * k) / 6, ty, 5, "#6f4f33", 1.8));
+    for (let k = 0; k < 22; k++) {
+      const cx = ix + r(0, iw), cy = ty + r(-38, 38);
+      add(blob(cx, cy, r(9, 15), pick(["#7fb04a", "#8dbf56", "#a9d36e"])));
+    }
+    for (let k = 0; k < 9; k++) add(blob(ix + r(10, iw - 10), ty + r(-30, 30), 4, "#f8faf1", 1.4));
+  } else {
+    for (let row = 0; row < 2; row++)
+      for (let col = 0; col < 4; col++) {
+        const cx = ix + iw * (col + 0.5) / 4 + r(-6, 6);
+        const cy = iy + ih * (row + 0.5) / 2 + r(-6, 6);
+        leafCluster(cx, cy, 38, ["#3f6b2a", "#2f5a20", "#4f7f30"]);
+      }
+    for (const [mx, my] of [[ix + 6, iy + 6], [ix + iw - 6, iy + 6], [ix + 6, iy + ih - 6], [ix + iw - 6, iy + ih - 6]]) {
+      add(blob(mx, my, 10, "#ee8a2a"));
+      add(blob(mx, my, 4, "#c2541d", 1.4));
+    }
+  }
+}
+
+// Hydroponic tower in the lawn, seen from above: stacked rings with plants around each tier.
+const tx = 800, ty = 500;
+add(`<circle cx="${tx + 4}" cy="${ty + 6}" r="54" fill="${K}" opacity=".2"/>`);
+for (const [rad, fill] of [[50, "#e8ece0"], [36, "#d3dac6"], [22, "#bfc8ae"]] as const) {
+  add(`<circle cx="${tx}" cy="${ty}" r="${rad}" fill="${fill}" stroke="${K}" stroke-width="2.4"/>`);
+}
+for (let k = 0; k < 12; k++) {
+  const a = (k / 12) * Math.PI * 2;
+  add(blob(tx + Math.cos(a) * 46, ty + Math.sin(a) * 46, 10, pick(["#8dbf56", "#7fb04a", "#b8dc7f"]), 1.8));
+}
+for (let k = 0; k < 8; k++) {
+  const a = (k / 8) * Math.PI * 2 + 0.3;
+  add(blob(tx + Math.cos(a) * 30, ty + Math.sin(a) * 30, 7, pick(greens), 1.6));
+}
+add(blob(tx, ty, 8, "#2a66a8", 2));
+
+// Stepping stones across the lawn and a few clover patches.
+for (const [sx, sy] of [[300, 488], [352, 512], [404, 490], [1196, 510], [1248, 488]]) {
+  add(`<ellipse cx="${sx}" cy="${sy}" rx="26" ry="18" fill="#c9c3b2" stroke="${K}" stroke-width="2.2"/>`);
+}
+for (let k = 0; k < 40; k++) {
+  const cx = r(10, 1590);
+  const cy = rng() < 0.5 ? r(10, 85) : r(915, 990);
+  add(`<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="2.6" fill="#f8faf1" opacity=".8"/>`);
+}
+---
+
+<svg class="wallpaper" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+  <defs>
+    <pattern id="mow" width="160" height="160" patternUnits="userSpaceOnUse" patternTransform="rotate(-24)">
+      <rect width="160" height="160" fill="#7ba44a" />
+      <rect width="80" height="160" fill="#86ae53" />
+    </pattern>
+    <pattern id="gravel" width="38" height="38" patternUnits="userSpaceOnUse">
+      <rect width="38" height="38" fill="#d9ccae" />
+      <circle cx="6" cy="8" r="2.2" fill="#bfae8b" /><circle cx="22" cy="4" r="1.6" fill="#ece3cd" />
+      <circle cx="30" cy="20" r="2.4" fill="#c7b796" /><circle cx="12" cy="27" r="1.8" fill="#ece3cd" />
+      <circle cx="28" cy="33" r="1.5" fill="#b6a37e" />
+    </pattern>
+    <pattern id="soil" width="30" height="30" patternUnits="userSpaceOnUse">
+      <rect width="30" height="30" fill="#4a3527" />
+      <circle cx="5" cy="6" r="1.6" fill="#5e4533" /><circle cx="19" cy="12" r="1.2" fill="#2f2219" />
+      <circle cx="11" cy="22" r="1.8" fill="#5e4533" /><circle cx="25" cy="26" r="1.1" fill="#2f2219" />
+    </pattern>
+  </defs>
+  <rect width={W} height={H} fill="url(#mow)" />
+  <rect x="104" y="104" width="1392" height="792" rx="28" fill="url(#gravel)" stroke="#1e2b1b" stroke-width="3" />
+  <Fragment set:html={shapes.join("")} />
+</svg>
+
+<style>
+  .wallpaper {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+</style>

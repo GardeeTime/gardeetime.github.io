@@ -6,6 +6,7 @@ startDate: "2026-05"
 summary: "Took hero-image creation from one-off manual design to generating 36 ready-to-test variants from a single campaign brief, with brand guidelines built into every generation."
 tags: [AI-PM, Eng, Design, Shipped]
 status: shipped
+grewFrom: [hero-content-editor]
 featured: true
 order: 3
 heroImage: ./screenshots/bulk-hero-variants/cover.png

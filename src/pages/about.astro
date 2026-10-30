@@ -1,390 +1,327 @@
 ---
-import Base from "../layouts/Base.astro";
+import Desktop from "../layouts/Desktop.astro";
 
 const timeline = [
-  { company: "Backstroke", brands: [{ src: "/logos/backstroke.png", alt: "Backstroke", href: "https://backstroke.com", wordmark: "Backstroke" }], role: "Director of Product", dates: "Jan 2026 — present", note: "AI-driven product systems for marketers. Predictive content, hero personalization, and Slack-native delivery." },
-  { company: "Salesloft", brands: [{ src: "/logos/salesloft.svg", alt: "Salesloft", href: "https://salesloft.com" }], role: "Senior Staff PM", dates: "Aug 2025 — Jan 2026", note: "AI agent features at enterprise scale." },
-  { company: "Salesloft", brands: [{ src: "/logos/salesloft.svg", alt: "Salesloft", href: "https://salesloft.com" }], role: "Staff PM", dates: "Dec 2022 — Aug 2025", note: "Led discovery and delivery on multiple AI and forecasting initiatives." },
-  { company: "Salesloft", brands: [{ src: "/logos/salesloft.svg", alt: "Salesloft", href: "https://salesloft.com" }], role: "Senior PM", dates: "Mar 2020 — Dec 2022", note: "Shipped revenue-impacting features in a hyper-growth sales engagement platform." },
-  { company: "Lessonly (now Seismic Learning)", brands: [{ src: "/logos/lessonly.png", alt: "Lessonly (now Seismic Learning)" }], role: "Product Manager", dates: "Nov 2016 — Mar 2020", note: "First PM. Took the platform from knowledge transfer into performance — practice, coaching, and learning paths." },
-  { company: "Geofeedia", brands: [{ src: "/logos/geofeedia.png", alt: "Geofeedia" }], role: "PM / Business Analyst", dates: "May 2015 — Oct 2016", note: "Started as a BA, became PM. Real-time location-based social intelligence." },
-  { company: "ExactTarget", brands: [{ src: "/logos/exacttarget.png", alt: "ExactTarget" }, { src: "/logos/salesforce.svg", alt: "Salesforce (acquired ExactTarget)" }], role: "Slingshot Intern", dates: "May 2014 — Aug 2014", note: "First marketing-tech exposure. The roots of how I think about the email/martech space today." },
+  { company: "Backstroke", logo: "/logos/backstroke.png", href: "https://backstroke.com", role: "Director of Product", dates: "Jan 2026 to now", note: "AI-driven product systems for marketers. Predictive content, hero personalization, and Slack-native delivery." },
+  { company: "Salesloft", logo: "/logos/salesloft.svg", href: "https://salesloft.com", role: "Senior Staff PM", dates: "Aug 2025 to Jan 2026", note: "AI agent features at enterprise scale." },
+  { company: "Salesloft", logo: "/logos/salesloft.svg", href: "https://salesloft.com", role: "Staff PM", dates: "Dec 2022 to Aug 2025", note: "Led discovery and delivery on multiple AI and forecasting initiatives." },
+  { company: "Salesloft", logo: "/logos/salesloft.svg", href: "https://salesloft.com", role: "Senior PM", dates: "Mar 2020 to Dec 2022", note: "Shipped revenue-impacting features in a hyper-growth sales engagement platform." },
+  { company: "Lessonly (now Seismic Learning)", logo: "/logos/lessonly.png", role: "Product Manager", dates: "Nov 2016 to Mar 2020", note: "First PM. Took the platform from knowledge transfer into performance: practice, coaching, and learning paths." },
+  { company: "Geofeedia", logo: "/logos/geofeedia.png", role: "PM / Business Analyst", dates: "May 2015 to Oct 2016", note: "Started as a BA, became PM. Real-time location-based social intelligence." },
+  { company: "ExactTarget (acquired by Salesforce)", logo: "/logos/exacttarget.png", role: "Slingshot Intern", dates: "May 2014 to Aug 2014", note: "First marketing-tech exposure. The roots of how I think about the email and martech space today." },
 ];
 
 const principles = [
   { key: "Fixed time, variable scope", body: "Six-week appetite cycles with smart trade-offs. Scope is the lever, not the deadline." },
-  { key: "Embed with users", body: "I watch users in their environment, replay sessions, and build plans from what I see — not what I assume." },
+  { key: "Embed with users", body: "I watch users in their environment, replay sessions, and build plans from what I see, not what I assume." },
   { key: "Shape before building", body: "Set the boundary. Leave the team room inside it." },
   { key: "Autonomous small teams", body: "Context, not micromanagement. The best teams I've worked with had clarity on the why and freedom on the how." },
   { key: "Scrappy execution", body: "Wear multiple hats. Speed and iteration over polish that ships in three months." },
-  { key: "AI prototyping", body: "Validate concepts in days, not weeks. I prototype directly in code now — Claude Code is my coding partner." },
+  { key: "AI prototyping", body: "Validate concepts in days, not weeks. I prototype directly in code now, with Claude Code as my coding partner." },
   { key: "Champagne feedback", body: "Honest internal feedback right after launch. The first 10 days teach you more than 10 weeks of pre-launch research." },
-  { key: "Impact metrics", body: "Track the business, the user, and the outcome — and share the data, including when it's not flattering." },
+  { key: "Impact metrics", body: "Track the business, the user, and the outcome, and share the data, including when it's not flattering." },
+];
+
+const stack = [
+  { key: "Design and planning", value: "Figma, Notion, Productboard, Linear" },
+  { key: "Analytics", value: "PostHog, Looker, Mixpanel, Segment, Fullstory" },
+  { key: "AI", value: "Claude (Code and API), Gemini, OpenAI" },
+  { key: "Release and ops", value: "LaunchDarkly, Flipper, GitHub Actions" },
 ];
 ---
 
-<Base title="About — Adam Gardner" description="Director of Product at Backstroke. Career, philosophy, and what I do when I'm not at a keyboard.">
-  <section class="page-head">
-    <div class="container-prose">
-      <p class="eyebrow">About</p>
-      <h1>Hi, I'm Adam.</h1>
-      <p class="lede">
-        I've spent the last decade building products at the seams of marketing, sales, and AI. I joined Backstroke in January 2026 as Director of Product. Before that, six years at Salesloft (Senior PM through Senior Staff). Before that, first PM at Lessonly.
-      </p>
-    </div>
+<Desktop title="About — Adam Gardner" description="Director of Product at Backstroke. Career, how I work, and what I grow when I'm not at a keyboard." windowTitle="Greenhouse — about Adam" current="about">
+  <header class="head">
+    <h1>Hi, I'm Adam.</h1>
+    <p class="lede">
+      I've spent the last decade building products at the seams of marketing, sales, and AI. I joined Backstroke in
+      January 2026 as Director of Product. Before that, six years at Salesloft (Senior PM through Senior Staff). Before
+      that, first PM at Lessonly.
+    </p>
+  </header>
+
+  <section class="sec prose">
+    <h2>What I'm doing now</h2>
+    <p>
+      Building Backstroke's predictive content layer for marketers. That includes Surge for campaigns and flows,
+      Creative Loops for generating audience-matched hero sets, control verdicts that tell a marketer when <em>not</em>
+      to send, and the Backstroke MCP and Claude plugin that put those predictions inside an AI assistant. I ship POCs
+      in code (Claude Code, Astro, Rails, React) and hand them to engineering with a <code>/feature-audit</code> pass to
+      make the review tractable.
+    </p>
+    <p>
+      I'd never written production code before joining Backstroke. I now ship code daily. The arc from "PM who reads
+      tickets" to "PM who lands PRs" has been the most fun part of this year. I wrote about the workflow behind that
+      shift in <a href="https://www.backstroke.com/blog/just-a-pm-who-shipped-to-production" target="_blank" rel="noreferrer noopener">I'm Just a PM (Who Shipped to Production)</a>.
+    </p>
   </section>
 
-  <section class="section">
-    <div class="container-prose">
-      <h2 class="section__heading">What I'm doing now</h2>
-      <p>
-        Building Backstroke's predictive content layer for marketers. That includes Surge for campaigns and flows, Creative Loops for generating audience-matched hero sets, control verdicts that tell a marketer when <em>not</em> to send, and the Backstroke MCP and Claude plugin that put those predictions inside an AI assistant. I'm shipping POCs in code (Claude Code, Astro, Rails, React) and handing them to engineering with a `/feature-audit` pass to make the review tractable.
-      </p>
-      <p>
-        I'd never written production code before joining Backstroke. I now ship code daily. The arc from "PM who reads tickets" to "PM who lands PRs" has been the most fun part of this year.
-      </p>
-      <p>
-        I wrote about the workflow behind that shift — first PR, the tools that made it possible, what still requires an engineer — in <a href="https://www.backstroke.com/blog/just-a-pm-who-shipped-to-production" class="ink-link" target="_blank" rel="noreferrer noopener">I'm Just a PM (Who Shipped to Production)</a>.
-      </p>
-    </div>
+  <section class="sec">
+    <h2>How I work</h2>
+    <ul class="tags">
+      {principles.map((p, i) => (
+        <li class="tag" style={`--tilt:${[-1, 0.8, -0.4, 1.1, -0.8, 0.5, -1.2, 0.9][i]}deg`}>
+          <span class="tag__key">{p.key}</span>
+          <span class="tag__body">{p.body}</span>
+        </li>
+      ))}
+    </ul>
   </section>
 
-  <section class="section">
-    <div class="container-prose">
-      <h2 class="section__heading">How I work</h2>
-      <ol class="principles">
-        {principles.map((p) => (
-          <li class="principle">
-            <span class="principle__key">{p.key}</span>
-            <span class="principle__body">{p.body}</span>
-          </li>
-        ))}
-      </ol>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container-wide">
-      <h2 class="section__heading section__heading--wide">Career</h2>
-      <ol class="timeline">
-        {timeline.map((t) => (
-          <li class="timeline-row">
-            <div class="timeline-row__dates">
-              <span class="meta">{t.dates}</span>
+  <section class="sec">
+    <h2>Where I've grown things</h2>
+    <ol class="rings">
+      {timeline.map((t) => (
+        <li class="ring">
+          <p class="ring__dates">{t.dates}</p>
+          <div class="ring__main">
+            <div class="ring__co">
+              <img src={t.logo} alt="" width="28" height="28" loading="lazy" />
+              {t.href ? <a href={t.href} target="_blank" rel="noreferrer noopener">{t.company}</a> : <span>{t.company}</span>}
             </div>
-            <div class="timeline-row__main">
-              <div class="timeline-row__brand" aria-label={t.company}>
-                {t.brands.map((b, i) => (
-                  <>
-                    {i > 0 && <span class="timeline-row__brand-sep" aria-hidden="true">→</span>}
-                    {b.href
-                      ? (
-                        <a class="timeline-row__logo-link" href={b.href} target="_blank" rel="noreferrer noopener" aria-label={`${b.alt} website`}>
-                          <img class="timeline-row__logo" src={b.src} alt={b.alt} loading="lazy" decoding="async" />
-                          {b.wordmark && <span class="timeline-row__wordmark">{b.wordmark}</span>}
-                        </a>
-                      )
-                      : (
-                        <span class="timeline-row__logo-link timeline-row__logo-link--static">
-                          <img class="timeline-row__logo" src={b.src} alt={b.alt} loading="lazy" decoding="async" />
-                          {b.wordmark && <span class="timeline-row__wordmark">{b.wordmark}</span>}
-                        </span>
-                      )
-                    }
-                  </>
-                ))}
-              </div>
-              <p class="timeline-row__role">{t.role}</p>
-              <p class="timeline-row__note">{t.note}</p>
-            </div>
-          </li>
-        ))}
-      </ol>
-    </div>
+            <p class="ring__role">{t.role}</p>
+            <p class="ring__note">{t.note}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
   </section>
 
-  <section class="section">
-    <div class="container-prose">
-      <h2 class="section__heading">Off the clock</h2>
-      <p>
-        I keep <strong>six raised garden beds</strong>, a hydroponic tower, and a small compost system in Indianapolis. I run half marathons (slowly, but I finish). I'm a Purdue basketball fan with the receipts to prove it. My last mile is usually with my dog.
-      </p>
-      <p>
-        The mycelium network powering this site is a deliberate choice — most of what I build at work is a network of small connected things that share roots. Same as the garden.
-      </p>
-    </div>
+  <section class="sec prose">
+    <h2>Off the clock</h2>
+    <p>
+      I keep <strong>six raised garden beds</strong>, a hydroponic tower, and a small compost system in Indianapolis.
+      They inspired this site's background. I run half marathons (slowly, but I finish). I'm a Purdue basketball
+      fan with the receipts to prove it. My last mile is usually with my dog.
+    </p>
+    <p>
+      The garden is a fair picture of how I like to build: plant small, watch closely, keep what thrives, and compost
+      the rest into next season.
+    </p>
   </section>
 
-  <section class="section">
-    <div class="container-prose">
-      <h2 class="section__heading">Education + cert</h2>
-      <ul class="plain-list">
-        <li><strong>Purdue University</strong>, Krannert School of Management — B.S. Business Management, Marketing</li>
-        <li><strong>Pragmatic Marketing Certified</strong> — Level II (PMC-II)</li>
-        <li><strong>Improving Your Product Sense</strong> — Shreyas Doshi cohort</li>
-        <li><strong>Product Discovery Fundamentals</strong> — Theresa Torres</li>
+  <section class="sec split">
+    <div>
+      <h2>Education and certs</h2>
+      <ul class="plain">
+        <li><strong>Purdue University</strong>, Krannert School of Management. B.S. Business Management, Marketing</li>
+        <li><strong>Pragmatic Marketing Certified</strong>, Level II (PMC-II)</li>
+        <li><strong>Improving Your Product Sense</strong>, Shreyas Doshi cohort</li>
+        <li><strong>Product Discovery Fundamentals</strong>, Teresa Torres</li>
       </ul>
     </div>
-  </section>
-
-  <section class="section">
-    <div class="container-prose">
-      <h2 class="section__heading">Stack</h2>
-      <p class="meta meta--label">Design / planning</p>
-      <p>Figma, Notion, Productboard, Linear</p>
-      <p class="meta meta--label">Analytics</p>
-      <p>PostHog, Looker, Mixpanel, Segment, Fullstory</p>
-      <p class="meta meta--label">AI</p>
-      <p>Claude (Code + API), Gemini, OpenAI</p>
-      <p class="meta meta--label">Release / ops</p>
-      <p>LaunchDarkly, Flipper, GitHub Actions</p>
+    <div>
+      <h2>Toolshed</h2>
+      <dl class="shed">
+        {stack.map((s) => (
+          <div><dt>{s.key}</dt><dd>{s.value}</dd></div>
+        ))}
+      </dl>
     </div>
   </section>
 
-  <section class="section section--cta">
-    <div class="container-prose">
-      <hr />
-      <p class="meta">Want to talk about AI in product, predictive content for ESPs, or building POCs as a non-engineer? <a href="mailto:adamgardner32@gmail.com" class="ink-link">Email me</a> or <a href="https://www.linkedin.com/in/adamgardner-97508353" class="ink-link" target="_blank" rel="noreferrer noopener">find me on LinkedIn</a>.</p>
+  <section class="sec cta">
+    <p>Want to talk about AI in product, predictive content for ESPs, or building POCs as a non-engineer?</p>
+    <div class="cta__actions">
+      <a class="btn" href="mailto:adamgardner32@gmail.com">Email me</a>
+      <a class="btn btn--plain" href="https://www.linkedin.com/in/adamgardner-97508353" target="_blank" rel="noreferrer noopener">Find me on LinkedIn</a>
     </div>
   </section>
-</Base>
+</Desktop>
 
 <style>
-  .page-head {
-    padding-top: clamp(3rem, 7vh, 5rem);
-    padding-bottom: 1.5rem;
+  .head h1 {
+    margin: 0 0 1rem;
   }
 
-  .page-head h1 {
-    margin-block: 0.75rem 1.25rem;
+  .sec {
+    margin-top: clamp(3rem, 7vw, 4.5rem);
   }
 
-  .lede {
-    font-family: var(--font-serif);
-    font-size: clamp(1.125rem, 1.7vw, 1.3125rem);
-    line-height: 1.5;
-    color: var(--color-ink);
-    max-width: 50ch;
-    font-variation-settings: "opsz" 24, "SOFT" 50;
+  .sec > h2,
+  .sec h2 {
+    margin: 0 0 1.25rem;
   }
 
-  .section {
-    padding-block: 2rem;
-  }
-
-  .section--cta {
-    padding-top: 1rem;
-  }
-
-  .section__heading {
-    font-family: var(--font-serif);
-    font-size: 1.5rem;
-    font-variation-settings: "opsz" 36, "SOFT" 30;
-    margin-bottom: 1.25rem;
-    color: var(--color-spore);
-  }
-
-  .section__heading--wide {
-    margin-bottom: 2rem;
-  }
-
-  .section p {
-    color: var(--color-ink-muted);
-    margin-bottom: 1rem;
-    line-height: 1.7;
-  }
-
-  .section p strong {
-    color: var(--color-ink);
-    font-weight: 500;
-  }
-
-  .principles {
+  .tags {
     list-style: none;
-    padding: 0;
     margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    counter-reset: principle;
-  }
-
-  .principle {
+    padding: 0;
     display: grid;
-    grid-template-columns: minmax(0, 13rem) 1fr;
-    gap: 1.5rem;
-    align-items: baseline;
-    padding-block: 0.875rem;
-    border-bottom: 1px solid var(--color-border);
-    counter-increment: principle;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 1.1rem;
   }
 
-  .principle:last-child {
-    border-bottom: none;
-  }
-
-  .principle__key {
-    font-family: var(--font-serif);
-    font-size: 1rem;
-    font-variation-settings: "opsz" 18, "SOFT" 50;
-    color: var(--color-ink);
+  .tag {
     position: relative;
-  }
-
-  .principle__key::before {
-    content: "0" counter(principle);
-    font-family: var(--font-mono);
-    font-size: 0.6875rem;
-    color: var(--color-moss);
-    letter-spacing: 0.1em;
-    margin-right: 0.625rem;
-    vertical-align: 0.15em;
-  }
-
-  .principle__body {
-    color: var(--color-ink-muted);
-    line-height: 1.6;
-    font-size: 0.9375rem;
-  }
-
-  .timeline {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .timeline-row {
     display: grid;
-    grid-template-columns: 12rem 1fr;
-    gap: 2rem;
-    padding-block: 1.25rem;
-    border-bottom: 1px solid var(--color-border);
-    align-items: baseline;
+    gap: 0.35rem;
+    align-content: start;
+    padding: 1.6rem 1rem 1rem;
+    background: var(--color-paper);
+    border: 1.5px solid var(--color-kale);
+    border-radius: 6px 6px 6px 6px;
+    transform: rotate(var(--tilt));
+    box-shadow: 0 3px 0 var(--color-chard-deep);
   }
 
-  .timeline-row:last-child {
-    border-bottom: none;
+  .tag::before {
+    content: "";
+    position: absolute;
+    top: 0.6rem;
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    margin-left: -5px;
+    border-radius: 50%;
+    border: 1.5px solid var(--color-kale);
+    background: var(--color-chard);
   }
 
-  .timeline-row__dates {
-    padding-top: 0.25rem;
+  .tag__key {
+    font-weight: 700;
+    font-size: 1.02rem;
   }
 
-  .timeline-row__brand {
+  .tag__body {
+    font-size: 0.925rem;
+    line-height: 1.45;
+    color: var(--color-kale-soft);
+  }
+
+  .rings {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-left: 3px solid var(--color-leaf);
+  }
+
+  .ring {
+    position: relative;
+    display: grid;
+    grid-template-columns: 11rem minmax(0, 1fr);
+    gap: 1rem;
+    padding: 0 0 1.75rem 1.5rem;
+  }
+
+  .ring::before {
+    content: "";
+    position: absolute;
+    left: -9px;
+    top: 0.3rem;
+    width: 15px;
+    height: 15px;
+    border-radius: 50% 0;
+    background: var(--color-leaf-bright);
+    border: 1.5px solid var(--color-kale);
+    transform: rotate(-20deg);
+  }
+
+  .ring__dates {
+    margin: 0;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-kale-soft);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ring__co {
     display: flex;
     align-items: center;
-    gap: 0.875rem;
-    margin-bottom: 0.5rem;
-    min-height: 1.75rem;
-    flex-wrap: wrap;
+    gap: 0.6rem;
+    font-weight: 700;
+    font-size: 1.1rem;
   }
 
-  .timeline-row__logo {
-    flex: none;
-    height: 1.625rem;
-    width: auto;
-    max-width: 7.5rem;
+  .ring__co img {
+    width: 28px;
+    height: 28px;
     object-fit: contain;
-    object-position: left center;
-    filter: brightness(0) invert(1);
-    opacity: 0.78;
-    transition: opacity 160ms ease;
+    border-radius: 6px;
+    background: #fff;
+    border: 1px solid var(--color-chard-deep);
+    padding: 2px;
   }
 
-  .timeline-row__logo-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    line-height: 0;
+  .ring__co a {
+    color: var(--color-kale);
   }
 
-  .timeline-row__logo-link--static {
-    cursor: default;
+  .ring__role {
+    margin: 0.2rem 0 0.25rem;
+    font-weight: 600;
+    color: var(--color-leaf);
   }
 
-  .timeline-row__wordmark {
-    font-family: var(--font-serif);
-    font-size: 1.125rem;
-    font-variation-settings: "opsz" 24, "SOFT" 30;
-    color: var(--color-ink);
-    line-height: 1;
-    opacity: 0.78;
-    transition: opacity 160ms ease;
-  }
-
-  .timeline-row__logo-link:hover .timeline-row__logo,
-  .timeline-row__logo-link:focus-visible .timeline-row__logo,
-  .timeline-row__logo-link:hover .timeline-row__wordmark,
-  .timeline-row__logo-link:focus-visible .timeline-row__wordmark {
-    opacity: 1;
-  }
-
-  a.timeline-row__logo-link:focus-visible {
-    outline: 2px solid var(--color-moss);
-    outline-offset: 4px;
-    border-radius: 2px;
-  }
-
-  .timeline-row__brand-sep {
-    color: var(--color-ink-subtle);
-    font-family: var(--font-mono);
-    font-size: 0.875rem;
-    line-height: 1;
-  }
-
-  .timeline-row__role {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    color: var(--color-moss);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-bottom: 0.625rem;
-  }
-
-  .timeline-row__note {
-    color: var(--color-ink-muted);
-    font-size: 0.9375rem;
-    line-height: 1.6;
+  .ring__note {
+    margin: 0;
+    color: var(--color-kale-soft);
     max-width: 60ch;
   }
 
-  .meta--label {
-    text-transform: uppercase;
-    color: var(--color-moss);
-    margin-top: 1.25rem;
-    margin-bottom: 0.25rem;
+  .split {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2.5rem;
   }
 
-  .plain-list {
-    list-style: none;
-    padding: 0;
+  .plain {
     margin: 0;
+    padding-left: 1.1rem;
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .shed {
+    margin: 0;
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .shed dt {
+    font-size: 0.8rem;
+    font-weight: 650;
+    color: var(--color-kale-soft);
+  }
+
+  .shed dd {
+    margin: 0.1rem 0 0;
+  }
+
+  .cta {
+    padding: 1.75rem;
+    background: var(--color-chard);
+    border: 1.5px solid var(--color-kale);
+    border-radius: 12px;
+  }
+
+  .cta p {
+    margin: 0 0 1.25rem;
+    font-size: 1.15rem;
+    font-weight: 600;
+    max-width: 40ch;
+  }
+
+  .cta__actions {
     display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
   }
 
-  .plain-list li {
-    color: var(--color-ink-muted);
-    line-height: 1.6;
-  }
-
-  .plain-list strong {
-    color: var(--color-ink);
-    font-weight: 500;
-  }
-
-  @media (max-width: 720px) {
-    .principle {
+  @media (max-width: 760px) {
+    .ring {
       grid-template-columns: 1fr;
-      gap: 0.5rem;
+      gap: 0.25rem;
     }
 
-    .timeline-row {
+    .split {
       grid-template-columns: 1fr;
-      gap: 0.5rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tag {
+      transform: none;
     }
   }
 </style>

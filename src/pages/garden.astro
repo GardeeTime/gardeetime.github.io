@@ -1,0 +1,25 @@
+---
+import Desktop from "../layouts/Desktop.astro";
+import GardenMap from "../components/garden/GardenMap.astro";
+---
+
+<Desktop title="Project map — Adam Gardner" windowTitle="Raised beds — how the work connects" current="map">
+  <header class="head">
+    <h1>Raised beds</h1>
+    <p class="lede">
+      One bed per company, planted along a drip line that runs from 2017 to now. Vines show which earlier project each
+      one grew out of. Hover or tab to a plant to trace its vines, and select it to read the case study.
+    </p>
+  </header>
+  <GardenMap />
+</Desktop>
+
+<style>
+  .head {
+    margin-bottom: 2.5rem;
+  }
+
+  .head h1 {
+    margin: 0 0 1rem;
+  }
+</style>

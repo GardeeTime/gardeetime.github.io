@@ -6,6 +6,7 @@ startDate: "2026-09"
 summary: "Generate, check, and score new heroes against the one you'd otherwise send, round after round, until there's a set predicted to beat it. Then carry that set straight into a campaign without re-scoring."
 tags: [AI-PM, Eng, Strategy, Design, Shipped]
 status: shipped
+grewFrom: [control-verdict, smart-shortlist, hero-families]
 featured: true
 order: 1
 heroImage: ./screenshots/creative-loops/cover.jpg

@@ -6,6 +6,7 @@ startDate: "2026-04"
 summary: "Extended Surge from campaigns to Klaviyo flows — the always-on side of email. Every welcome, abandoned cart, browse abandon, and post-purchase send now gets the predicted-best hero per cohort, with no new creative work."
 tags: [AI-PM, Strategy, Shipped]
 status: shipped
+grewFrom: [surge]
 featured: false
 order: 2
 heroImage: ./screenshots/surge-for-flows/cover.png

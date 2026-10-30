@@ -1,0 +1,597 @@
+---
+/*
+ * Project map drawn as raised beds. Each company is a bed laid along a drip
+ * line that runs 2017 → now; each project is a plant; `grewFrom` links are
+ * vines. Layout is computed at build time in (t, s) space (t along time, s
+ * lateral) and mapped to a wide or tall SVG. The script plants it on view.
+ */
+import { getCollection } from "astro:content";
+import { veggieFor } from "./veggies";
+
+const entries = await getCollection("work");
+
+const fmt = (d: string) => {
+  const [y, m] = d.split("-");
+  return new Date(Number(y), Number(m) - 1).toLocaleString("en-US", { month: "short", year: "numeric" });
+};
+const monthIndex = (d: string) => {
+  const [y, m] = d.split("-").map(Number);
+  return y * 12 + (m - 1);
+};
+function hash(str: string) {
+  let h = 2166136261;
+  for (let i = 0; i < str.length; i++) h = Math.imul(h ^ str.charCodeAt(i), 16777619);
+  return h >>> 0;
+}
+
+type Node = {
+  id: string;
+  title: string;
+  company: string;
+  date: string;
+  m: number;
+  featured: boolean;
+  parents: string[];
+  t: number;
+  s: number;
+};
+
+const ids = new Set(entries.map((e) => e.id));
+const nodes: Node[] = entries
+  .map((e) => ({
+    id: e.id,
+    title: e.data.title.split(" — ")[0],
+    company: e.data.company.replace(/\s*\(.*\)/, ""),
+    date: e.data.startDate,
+    m: monthIndex(e.data.startDate),
+    featured: e.data.featured,
+    parents: e.data.grewFrom.filter((p) => ids.has(p)),
+    t: 0,
+    s: 0,
+  }))
+  .sort((a, b) => a.m - b.m || a.parents.length - b.parents.length || a.id.localeCompare(b.id));
+const byId = new Map(nodes.map((n) => [n.id, n]));
+
+const companies: { name: string; nodes: Node[] }[] = [];
+for (const n of nodes) {
+  let c = companies.find((c) => c.name === n.company);
+  if (!c) companies.push((c = { name: n.company, nodes: [] }));
+  c.nodes.push(n);
+}
+
+interface Opts {
+  length: number;
+  half: number;
+  minGap: number;
+  vertical: boolean;
+  w: number;
+  h: number;
+  center: number;
+}
+
+function layout(o: Opts) {
+  const margin = 46;
+  const bandGap = o.vertical ? 64 : 50;
+  const usable = o.length - margin * 2 - bandGap * (companies.length - 1);
+  const shares = companies.map((c) => Math.max(0.17, c.nodes.length / nodes.length));
+  const shareSum = shares.reduce((a, b) => a + b, 0);
+
+  const beds: { name: string; years: string; t0: number; t1: number }[] = [];
+  let cursor = margin;
+  companies.forEach((c, i) => {
+    const bw = (shares[i] / shareSum) * usable;
+    const pad = Math.min(34, bw * 0.16);
+    const mMin = Math.min(...c.nodes.map((n) => n.m));
+    const mMax = Math.max(...c.nodes.map((n) => n.m));
+    const perMonth = new Map<number, number>();
+    for (const n of c.nodes) {
+      const k = perMonth.get(n.m) ?? 0;
+      perMonth.set(n.m, k + 1);
+      n.t = cursor + pad + (mMax === mMin ? 0.5 : (n.m - mMin) / (mMax - mMin)) * (bw - pad * 2) + k * 16;
+    }
+    const years = [...new Set(c.nodes.map((n) => n.date.slice(0, 4)))];
+    beds.push({ name: c.name, years: years.length > 1 ? `${years[0]}–${years.at(-1)}` : years[0], t0: cursor, t1: cursor + bw });
+    cursor += bw + bandGap;
+  });
+
+  for (const n of nodes) {
+    for (const p of n.parents) {
+      const parent = byId.get(p)!;
+      if (n.t < parent.t + 20) n.t = parent.t + 20;
+    }
+  }
+
+  // Greedy placement: each plant takes the lateral slot with the most elbow room,
+  // nudged toward its parent so vines stay short.
+  const placed: Node[] = [];
+  for (const n of nodes) {
+    const parent = n.parents.length ? byId.get(n.parents[0])! : null;
+    let best = 0;
+    let bestScore = -Infinity;
+    for (let k = -12; k <= 12; k++) {
+      const s = (k / 12) * o.half;
+      if (Math.abs(s) < 34) continue;
+      const room = placed.reduce((min, q) => Math.min(min, Math.hypot(q.t - n.t, q.s - s)), Infinity);
+      const pull = parent ? Math.abs(s - parent.s) * 0.35 : Math.abs(Math.abs(s) - o.half * 0.55) * 0.15;
+      const score = Math.min(room, o.minGap * 2.2) - pull + (hash(n.id + k) % 7);
+      if (score > bestScore) {
+        bestScore = score;
+        best = s;
+      }
+    }
+    n.s = best;
+    placed.push(n);
+  }
+  for (let iter = 0; iter < 260; iter++) {
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const a = nodes[i], b = nodes[j];
+        const dist = Math.hypot(a.t - b.t, a.s - b.s);
+        if (dist < o.minGap) {
+          const push = (o.minGap - dist) / 2;
+          const dir = a.s === b.s ? (hash(a.id + b.id) % 2 ? 1 : -1) : Math.sign(a.s - b.s);
+          a.s += dir * push;
+          b.s -= dir * push;
+        }
+      }
+    }
+    for (const n of nodes) {
+      if (Math.abs(n.s) < 34) n.s = (Math.sign(n.s) || 1) * 34;
+      n.s = Math.max(-o.half, Math.min(o.half, n.s));
+    }
+  }
+
+  const lineS = (t: number) => 4 * Math.sin(t / 80);
+  const map = (t: number, s: number) => (o.vertical ? { x: o.center + s, y: t } : { x: t, y: o.center + s });
+  const pt = (t: number, s: number) => {
+    const p = map(t, s);
+    return `${p.x.toFixed(1)},${p.y.toFixed(1)}`;
+  };
+  const curve = (t0: number, s0: number, t1: number, s1: number, wob: number) => {
+    const dt = Math.max(t1 - t0, 14);
+    return `M${pt(t0, s0)} C${pt(t0 + dt * 0.5, s0 + (s1 - s0) * 0.1 + wob)} ${pt(t1 - dt * 0.4, s1 - wob * 0.4)} ${pt(t1, s1)}`;
+  };
+
+  const tStart = margin * 0.35;
+  const tEnd = o.length - margin * 0.35;
+  let line = `M${pt(tStart, lineS(tStart))}`;
+  for (let t = tStart + 14; t <= tEnd; t += 14) line += ` L${pt(t, lineS(t))}`;
+  const emitters = [];
+  for (let t = tStart + 30; t < tEnd; t += 44) emitters.push({ ...map(t, lineS(t)), t });
+
+  const stems: { d: string; node: string; t0: number; t1: number }[] = [];
+  const vines: { d: string; from: string; to: string; t0: number; t1: number; leaf: { x: number; y: number; a: number } }[] = [];
+  for (const n of nodes) {
+    const r = hash(n.id + (o.vertical ? "v" : "h"));
+    if (n.parents.length === 0) {
+      const ta = n.t - 22 - (r % 16);
+      stems.push({ d: curve(ta, lineS(ta), n.t, n.s, ((r % 13) - 6) * 1.2), node: n.id, t0: ta, t1: n.t });
+    }
+    for (const p of n.parents) {
+      const parent = byId.get(p)!;
+      const midT = (parent.t + n.t) / 2, midS = (parent.s + n.s) / 2 + (((r >> 4) % 21) - 10);
+      const mid = map(midT, midS);
+      const ang = Math.atan2(n.s - parent.s, n.t - parent.t) * (180 / Math.PI);
+      vines.push({
+        d: curve(parent.t, parent.s, n.t, n.s, ((r >> 4) % 21) - 10),
+        from: p,
+        to: n.id,
+        t0: parent.t,
+        t1: n.t,
+        leaf: { x: mid.x, y: mid.y, a: o.vertical ? 90 - ang : ang },
+      });
+    }
+  }
+
+  const bedRects = beds.map((b) => {
+    const a = map(b.t0, -(o.half + 30));
+    const z = map(b.t1, o.half + 30);
+    return { ...b, x: Math.min(a.x, z.x), y: Math.min(a.y, z.y), w: Math.abs(z.x - a.x), h: Math.abs(z.y - a.y) };
+  });
+
+  return { ...o, nodes: nodes.map((n) => ({ ...n, ...map(n.t, n.s) })), line, emitters, stems, vines, beds: bedRects, t0: tStart, t1: tEnd };
+}
+
+const wide = layout({ length: 1200, half: 175, minGap: 46, vertical: false, w: 1200, h: 470, center: 252 });
+const tall = layout({ length: 1500, half: 120, minGap: 44, vertical: true, w: 340, h: 1500, center: 170 });
+
+const summary = `${nodes.length} plantings since ${nodes[0].date.slice(0, 4)}.`;
+const meta = Object.fromEntries(nodes.map((n) => [n.id, { title: n.title, when: `${fmt(n.date)}, ${n.company}` }]));
+---
+
+<div class="gmap" data-gmap>
+  <div class="gmap__bar">
+    <div class="gmap__readout" aria-live="polite">
+      <p class="gmap__when" data-when>Three beds</p>
+      <p class="gmap__title" data-title>{summary}</p>
+    </div>
+    <button type="button" class="btn btn--plain btn--small" data-replant>Replant</button>
+  </div>
+
+  {[wide, tall].map((L) => (
+    <svg
+      class:list={["gmap__svg", L.vertical ? "gmap__svg--tall" : "gmap__svg--wide"]}
+      viewBox={`0 0 ${L.w} ${L.h}`}
+      role="group"
+      aria-label={`Project map: ${summary}`}
+      data-t0={L.t0}
+      data-t1={L.t1}
+      data-vertical={L.vertical ? "1" : "0"}
+    >
+      <defs>
+        <pattern id={`gsoil-${L.vertical ? "t" : "w"}`} width="26" height="26" patternUnits="userSpaceOnUse">
+          <rect width="26" height="26" fill="#4a3527" />
+          <circle cx="5" cy="6" r="1.5" fill="#5e4533" /><circle cx="17" cy="11" r="1.1" fill="#2f2219" />
+          <circle cx="10" cy="20" r="1.6" fill="#5e4533" /><circle cx="22" cy="23" r="1" fill="#2f2219" />
+        </pattern>
+      </defs>
+
+      <g aria-hidden="true">
+        {L.beds.map((b) => (
+          <g class="gmap__bed">
+            <rect x={b.x - 12} y={b.y - 12} width={b.w + 24} height={b.h + 24} rx="5" fill="#a87c55" stroke="#1e2b1b" stroke-width="3" />
+            <rect x={b.x} y={b.y} width={b.w} height={b.h} fill={`url(#gsoil-${L.vertical ? "t" : "w"})`} stroke="#1e2b1b" stroke-width="2.5" />
+            <g transform={`translate(${b.x - 4} ${b.y - 30})`}>
+              <rect width={b.name.length * 8.6 + b.years.length * 6.4 + 30} height="26" rx="4" fill="#f8faf1" stroke="#1e2b1b" stroke-width="2" />
+              <text x="10" y="18" class="gmap__sign">{b.name} <tspan class="gmap__sign-years">{b.years}</tspan></text>
+            </g>
+          </g>
+        ))}
+      </g>
+
+      <path class="gmap__line" d={L.line} pathLength="1" data-t0={L.t0} data-t1={L.t1} aria-hidden="true" />
+      <g aria-hidden="true">
+        {L.emitters.map((e) => <circle class="gmap__emitter" cx={e.x.toFixed(1)} cy={e.y.toFixed(1)} r="3.2" data-t={e.t} />)}
+      </g>
+
+      <g class="gmap__growth" aria-hidden="true">
+        {L.stems.map((p) => <path class="gmap__stem" d={p.d} pathLength="1" data-node={p.node} data-t0={p.t0} data-t1={p.t1} />)}
+        {L.vines.map((p) => (
+          <g class="gmap__vine" data-from={p.from} data-to={p.to}>
+            <path d={p.d} pathLength="1" data-t0={p.t0} data-t1={p.t1} />
+            <path class="gmap__leaf" data-t={p.t1} transform={`translate(${p.leaf.x.toFixed(1)} ${p.leaf.y.toFixed(1)}) rotate(${(p.leaf.a - 40).toFixed(0)})`} d="M0 0c4-7 12-8 16-6-2 6-9 9-16 6z" />
+          </g>
+        ))}
+      </g>
+
+      <g>
+        {L.nodes.map((n) => {
+          const v = veggieFor(n.id);
+          const size = n.featured ? 36 : 30;
+          return (
+            <a
+              href={`/work/${n.id}/`}
+              class:list={["gmap__plant", { "is-featured": n.featured }]}
+              data-id={n.id}
+              data-t={n.t}
+              data-parents={n.parents.join(" ")}
+              aria-label={`${n.title}, ${fmt(n.date)}, ${n.company}`}
+            >
+              <g transform={`translate(${n.x.toFixed(1)} ${n.y.toFixed(1)})`}>
+                <g class="gmap__pop">
+                  <circle class="gmap__ring" r={size / 2 + 6} />
+                  <circle class="gmap__pad" r={size / 2 + 2} />
+                  <svg x={-size / 2} y={-size / 2} width={size} height={size} viewBox="0 0 48 48" set:html={v.svg} />
+                </g>
+              </g>
+            </a>
+          );
+        })}
+      </g>
+    </svg>
+  ))}
+
+  <script type="application/json" data-gmap-meta set:html={JSON.stringify({ meta, summary })} />
+</div>
+
+<style>
+  .gmap__bar {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 2.25rem;
+  }
+
+  .gmap__readout {
+    min-height: 4.75rem;
+  }
+
+  .gmap__when {
+    margin: 0 0 0.25rem;
+    font-size: 0.9rem;
+    font-weight: 650;
+    color: var(--color-leaf);
+  }
+
+  .gmap__title {
+    margin: 0;
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    font-weight: 750;
+    font-variation-settings: "opsz" 72, "wdth" 88;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  .gmap__svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .gmap__svg--tall {
+    display: none;
+  }
+
+  .gmap__sign {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 700;
+    fill: var(--color-kale);
+  }
+
+  .gmap__sign-years {
+    font-weight: 500;
+    font-size: 12px;
+    fill: var(--color-kale-soft);
+  }
+
+  .gmap__line {
+    fill: none;
+    stroke: var(--color-sky);
+    stroke-width: 3.5;
+    stroke-linecap: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+
+  .gmap__emitter {
+    fill: #1a4878;
+    opacity: 0;
+    transition: opacity 300ms ease;
+  }
+
+  .gmap__emitter.is-grown {
+    opacity: 1;
+  }
+
+  .gmap__stem,
+  .gmap__vine path:not(.gmap__leaf) {
+    fill: none;
+    stroke-linecap: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    transition: opacity 250ms ease, stroke 250ms ease;
+  }
+
+  .gmap__stem {
+    stroke: #8dbf56;
+    stroke-width: 2;
+  }
+
+  .gmap__vine path:not(.gmap__leaf) {
+    stroke: #a9d36e;
+    stroke-width: 3;
+  }
+
+  .gmap__leaf {
+    fill: #8dbf56;
+    stroke: var(--color-kale);
+    stroke-width: 1.2;
+    opacity: 0;
+    transition: opacity 400ms ease;
+  }
+
+  .gmap__leaf.is-grown {
+    opacity: 1;
+  }
+
+  .gmap__plant {
+    cursor: pointer;
+    outline: none;
+  }
+
+  .gmap__pop {
+    transform: scale(0);
+    transition: transform 520ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .gmap__plant.is-grown .gmap__pop {
+    transform: scale(1);
+  }
+
+  .gmap__pad {
+    fill: var(--color-paper);
+    stroke: var(--color-kale);
+    stroke-width: 2;
+  }
+
+  .gmap__ring {
+    fill: none;
+    stroke: var(--color-squash);
+    stroke-width: 4;
+    opacity: 0;
+    transition: opacity 200ms ease;
+  }
+
+  .gmap__plant:hover .gmap__ring,
+  .gmap__plant:focus-visible .gmap__ring,
+  .gmap__plant.is-active .gmap__ring {
+    opacity: 1;
+  }
+
+  .gmap__svg.is-tracing .gmap__stem,
+  .gmap__svg.is-tracing .gmap__vine {
+    opacity: 0.15;
+  }
+
+  .gmap__svg.is-tracing .gmap__plant {
+    opacity: 0.35;
+    transition: opacity 200ms ease;
+  }
+
+  .gmap__svg.is-tracing .is-lit {
+    opacity: 1;
+  }
+
+  .gmap__svg.is-tracing .gmap__vine.is-lit path:not(.gmap__leaf) {
+    stroke: var(--color-squash);
+    stroke-width: 4;
+  }
+
+  @media (max-width: 760px) {
+    .gmap__svg--wide {
+      display: none;
+    }
+
+    .gmap__svg--tall {
+      display: block;
+      width: min(100%, 420px);
+      margin-inline: auto;
+    }
+
+    .gmap__bar {
+      position: sticky;
+      top: var(--menubar-h);
+      z-index: 2;
+      padding-block: 0.75rem;
+      background: var(--color-paper);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .gmap__pop,
+    .gmap__leaf,
+    .gmap__emitter {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>("[data-gmap]");
+  if (root) {
+    const { meta, summary } = JSON.parse(root.querySelector("[data-gmap-meta]")!.textContent!);
+    const whenEl = root.querySelector<HTMLElement>("[data-when]")!;
+    const titleEl = root.querySelector<HTMLElement>("[data-title]")!;
+    const idle = { when: whenEl.textContent!, title: summary as string };
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const narrow = window.matchMedia("(max-width: 760px)");
+
+    const maps = [...root.querySelectorAll<SVGSVGElement>(".gmap__svg")].map((svg) => ({
+      svg,
+      vertical: svg.dataset.vertical === "1",
+      t0: Number(svg.dataset.t0),
+      t1: Number(svg.dataset.t1),
+      paths: [...svg.querySelectorAll<SVGPathElement>("[data-t0]")].map((el) => ({ el, t0: Number(el.dataset.t0), t1: Number(el.dataset.t1) })),
+      timed: [...svg.querySelectorAll<SVGElement>(".gmap__emitter, .gmap__leaf")].map((el) => ({ el, t: Number(el.dataset.t) })),
+      plants: [...svg.querySelectorAll<SVGAElement>(".gmap__plant")].map((el) => ({
+        el,
+        id: el.dataset.id!,
+        t: Number(el.dataset.t),
+        parents: (el.dataset.parents ?? "").split(" ").filter(Boolean),
+      })),
+    }));
+    const active = () => maps.find((m) => m.vertical === narrow.matches) ?? maps[0];
+
+    let tracing: string | null = null;
+    const show = (when: string, title: string) => {
+      whenEl.textContent = when;
+      titleEl.textContent = title;
+    };
+
+    function paint(map: (typeof maps)[number], c: number) {
+      for (const p of map.paths) {
+        const g = Math.min(1, Math.max(0, (c - p.t0) / Math.max(1, p.t1 - p.t0)));
+        p.el.style.strokeDashoffset = String(1 - g);
+        // Round caps paint a dot even at zero length.
+        p.el.style.visibility = g > 0 ? "" : "hidden";
+      }
+      for (const x of map.timed) x.el.classList.toggle("is-grown", c >= x.t);
+      let latest: (typeof map.plants)[number] | null = null;
+      for (const p of map.plants) {
+        const grown = c >= p.t;
+        p.el.classList.toggle("is-grown", grown);
+        if (grown && (!latest || p.t >= latest.t)) latest = p;
+      }
+      if (map === active() && !tracing) {
+        if (c > map.t1 || !latest) show(idle.when, idle.title);
+        else show(meta[latest.id].when, meta[latest.id].title);
+      }
+    }
+
+    let raf = 0;
+    function plant() {
+      cancelAnimationFrame(raf);
+      if (reduced.matches) {
+        maps.forEach((m) => paint(m, Infinity));
+        return;
+      }
+      const start = performance.now();
+      const dur = 5200;
+      const step = (now: number) => {
+        const p = Math.min(1, (now - start) / dur);
+        const e = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+        for (const m of maps) paint(m, m.t0 + e * (m.t1 - m.t0 + 40));
+        if (p < 1) raf = requestAnimationFrame(step);
+      };
+      raf = requestAnimationFrame(step);
+    }
+
+    function lineage(map: (typeof maps)[number], id: string) {
+      const lit = new Set([id]);
+      const up = [id];
+      while (up.length) {
+        const cur = up.pop();
+        const n = map.plants.find((x) => x.id === cur);
+        n?.parents.forEach((p) => !lit.has(p) && (lit.add(p), up.push(p)));
+      }
+      const down = [id];
+      const seen = new Set([id]);
+      while (down.length) {
+        const cur = down.pop()!;
+        for (const n of map.plants) {
+          if (n.parents.includes(cur) && !seen.has(n.id)) {
+            seen.add(n.id);
+            lit.add(n.id);
+            down.push(n.id);
+          }
+        }
+      }
+      return lit;
+    }
+
+    function trace(map: (typeof maps)[number], id: string | null) {
+      tracing = id;
+      map.svg.classList.toggle("is-tracing", !!id);
+      const lit = id ? lineage(map, id) : new Set<string>();
+      for (const p of map.plants) {
+        p.el.classList.toggle("is-lit", lit.has(p.id));
+        p.el.classList.toggle("is-active", p.id === id);
+      }
+      map.svg.querySelectorAll<SVGElement>(".gmap__stem").forEach((s) => s.classList.toggle("is-lit", s.dataset.node === id));
+      map.svg.querySelectorAll<SVGGElement>(".gmap__vine").forEach((v) => v.classList.toggle("is-lit", lit.has(v.dataset.from!) && lit.has(v.dataset.to!)));
+      if (id) show(meta[id].when, meta[id].title);
+      else show(idle.when, idle.title);
+    }
+
+    for (const map of maps) {
+      for (const p of map.plants) {
+        p.el.addEventListener("pointerenter", () => trace(map, p.id));
+        p.el.addEventListener("pointerleave", () => trace(map, null));
+        p.el.addEventListener("focus", () => trace(map, p.id));
+        p.el.addEventListener("blur", () => trace(map, null));
+      }
+    }
+
+    root.querySelector("[data-replant]")!.addEventListener("click", plant);
+    const io = new IntersectionObserver((es) => {
+      if (es.some((e) => e.isIntersecting)) {
+        io.disconnect();
+        plant();
+      }
+    }, { threshold: 0.25 });
+    io.observe(root);
+  }
+</script>

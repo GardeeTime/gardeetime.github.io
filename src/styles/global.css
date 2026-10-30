@@ -1,156 +1,284 @@
 @import "tailwindcss";
 
-@theme {
-  /* Mycelium-inspired dark palette */
-  --color-bg: #0a0d0a;
-  --color-bg-elevated: #131711;
-  --color-bg-card: #181d16;
-  --color-ink: #ece9dc;
-  --color-ink-muted: #9c9885;
-  --color-ink-subtle: #5e5d50;
-  --color-moss: #7fa569;
-  --color-moss-glow: #9bc384;
-  --color-rust: #c98a5a;
-  --color-spore: #d4cfa3;
-  --color-border: #232820;
-  --color-border-glow: #3a4a31;
+@view-transition {
+  navigation: auto;
+}
 
-  --font-serif: "Fraunces", "Iowan Old Style", "Apple Garamond", Georgia, serif;
-  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+@theme {
+  /* Garden palette */
+  --color-kale: #1e2b1b;
+  --color-kale-soft: #4d5b46;
+  --color-kale-faint: #7c8873;
+  --color-paper: #f8faf1;
+  --color-chard: #dfe8c9;
+  --color-chard-deep: #bccb9d;
+  --color-tomato: #d8432a;
+  --color-tomato-deep: #8f2915;
+  --color-squash: #f3b63f;
+  --color-squash-soft: #fbe6b0;
+  --color-loam: #4a3527;
+  --color-loam-dark: #2f2219;
+  --color-cedar: #a87c55;
+  --color-cedar-dark: #6f4f33;
+  --color-leaf: #5f8f3b;
+  --color-leaf-bright: #8dbf56;
+  --color-sky: #2a66a8;
+  --color-beet: #8e2c5a;
+
+  --font-display: "Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
+  --font-serif: "Fraunces", "Iowan Old Style", Georgia, serif;
 }
 
 @layer base {
   :root {
-    color-scheme: dark;
+    color-scheme: light;
+    --menubar-h: 46px;
+    --rail-w: 104px;
   }
 
   html {
-    background-color: var(--color-bg);
-    color: var(--color-ink);
-    font-family: var(--font-sans);
-    font-feature-settings: "ss01", "cv11";
+    background: var(--color-loam);
+    color: var(--color-kale);
+    font-family: var(--font-display);
+    font-variation-settings: "wdth" 100;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
   }
 
   body {
     min-height: 100dvh;
-    line-height: 1.6;
-    font-size: 1.0625rem;
+    line-height: 1.5;
+    font-size: 1rem;
     overflow-x: hidden;
   }
 
   ::selection {
-    background-color: var(--color-moss);
-    color: var(--color-bg);
+    background: var(--color-squash);
+    color: var(--color-kale);
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-serif);
-    font-weight: 400;
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    color: var(--color-kale);
     letter-spacing: -0.02em;
-    line-height: 1.1;
-    color: var(--color-ink);
+    line-height: 1.05;
+    text-wrap: balance;
   }
 
-  h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); font-variation-settings: "opsz" 144, "SOFT" 50; }
-  h2 { font-size: clamp(1.75rem, 3.5vw, 2.5rem); font-variation-settings: "opsz" 96, "SOFT" 30; }
-  h3 { font-size: 1.5rem; font-variation-settings: "opsz" 36; }
+  h1 {
+    font-size: clamp(2.25rem, 4.6vw, 3.6rem);
+    font-weight: 750;
+    font-variation-settings: "opsz" 96, "wdth" 88;
+  }
+
+  h2 {
+    font-size: clamp(1.5rem, 2.6vw, 2rem);
+    font-weight: 700;
+    font-variation-settings: "opsz" 48, "wdth" 92;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 650;
+    font-variation-settings: "opsz" 24;
+  }
 
   a {
-    color: var(--color-moss-glow);
-    text-decoration: none;
-    transition: color 200ms ease;
+    color: var(--color-sky);
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 0.18em;
   }
 
   a:hover {
-    color: var(--color-spore);
+    color: var(--color-tomato-deep);
   }
 
-  code, pre, kbd {
-    font-family: var(--font-mono);
-    font-size: 0.9em;
+  :focus-visible {
+    outline: 3px solid var(--color-squash);
+    outline-offset: 2px;
+    border-radius: 4px;
   }
 
-  hr {
-    border: none;
-    border-top: 1px solid var(--color-border);
-    margin: 3rem 0;
+  img {
+    max-width: 100%;
+    height: auto;
   }
 }
 
-@layer components {
-  .container-prose {
-    width: 100%;
-    max-width: 42rem;
-    margin-inline: auto;
-    padding-inline: 1.5rem;
-  }
+/* Chunky buttons: the one tactile element, used for primary actions only. */
+.btn {
+  --btn-bg: var(--color-tomato);
+  --btn-ink: #fff;
+  --btn-edge: var(--color-tomato-deep);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.1rem;
+  border: 1.5px solid var(--color-kale);
+  border-radius: 9px;
+  background: var(--btn-bg);
+  color: var(--btn-ink);
+  font-family: var(--font-display);
+  font-weight: 650;
+  font-size: 0.975rem;
+  line-height: 1.2;
+  text-decoration: none;
+  box-shadow: 0 4px 0 var(--btn-edge), 0 4px 0 1.5px var(--color-kale);
+  transform: translateY(-2px);
+  transition: transform 90ms ease, box-shadow 90ms ease;
+  cursor: pointer;
+}
 
-  .container-wide {
-    width: 100%;
-    max-width: 64rem;
-    margin-inline: auto;
-    padding-inline: 1.5rem;
-  }
+.btn:hover {
+  color: var(--btn-ink);
+  transform: translateY(-3px);
+  box-shadow: 0 5px 0 var(--btn-edge), 0 5px 0 1.5px var(--color-kale);
+}
 
-  .eyebrow {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.18em;
-    color: var(--color-moss);
-  }
+.btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 0 var(--btn-edge), 0 1px 0 1.5px var(--color-kale);
+}
 
-  .meta {
-    font-family: var(--font-mono);
-    font-size: 0.8125rem;
-    color: var(--color-ink-subtle);
-    letter-spacing: 0.02em;
-  }
+.btn--plain {
+  --btn-bg: var(--color-paper);
+  --btn-ink: var(--color-kale);
+  --btn-edge: var(--color-chard-deep);
+}
 
-  .tag {
-    display: inline-block;
-    padding: 0.125rem 0.5rem;
-    border: 1px solid var(--color-border);
-    border-radius: 999px;
-    font-family: var(--font-mono);
-    font-size: 0.6875rem;
-    color: var(--color-ink-muted);
-    letter-spacing: 0.04em;
-    text-transform: lowercase;
-  }
+.btn--small {
+  padding: 0.35rem 0.75rem;
+  font-size: 0.875rem;
+  border-radius: 7px;
+}
 
-  .tag-shipped {
-    border-color: color-mix(in oklab, var(--color-moss) 35%, transparent);
-    color: var(--color-moss-glow);
-  }
+/* Long-form reading inside case studies and About. */
+.prose {
+  font-family: var(--font-serif);
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  font-variation-settings: "opsz" 14, "SOFT" 50;
+  color: var(--color-kale);
+  max-width: 68ch;
+}
 
-  .tag-poc, .tag-concept {
-    border-color: color-mix(in oklab, var(--color-rust) 35%, transparent);
-    color: var(--color-rust);
-  }
+.prose > * + * {
+  margin-top: 1.1em;
+}
 
-  /* Subtle organic underline that grows on hover — for inline links */
-  .ink-link {
-    position: relative;
-    color: var(--color-ink);
-    border-bottom: 1px solid color-mix(in oklab, var(--color-moss) 50%, transparent);
-    transition: border-color 250ms ease, color 250ms ease;
-  }
+.prose h2 {
+  margin-top: 2.2em;
+  font-size: 1.6rem;
+}
 
-  .ink-link:hover {
-    color: var(--color-spore);
-    border-bottom-color: var(--color-rust);
-  }
+.prose h3 {
+  margin-top: 1.8em;
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.3em;
+}
+
+.prose ul {
+  list-style: none;
+}
+
+.prose ul > li {
+  position: relative;
+}
+
+.prose ul > li::before {
+  content: "";
+  position: absolute;
+  left: -1.1em;
+  top: 0.62em;
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 50% 0;
+  background: var(--color-leaf);
+  transform: rotate(-20deg);
+}
+
+.prose ol {
+  list-style: decimal;
+}
+
+.prose li + li {
+  margin-top: 0.5em;
+}
+
+.prose strong {
+  font-weight: 650;
+}
+
+.prose code {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.85em;
+  background: var(--color-chard);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+}
+
+.prose pre {
+  background: var(--color-kale);
+  color: var(--color-chard);
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.6rem;
+  line-height: 1.2;
+}
+
+.prose pre code {
+  background: none;
+  padding: 0;
+}
+
+.prose img,
+.prose figure {
+  border-radius: 8px;
+  border: 1.5px solid var(--color-kale);
+}
+
+.prose blockquote {
+  border-left: 4px solid var(--color-leaf);
+  padding-left: 1rem;
+  color: var(--color-kale-soft);
+}
+
+.lede {
+  font-family: var(--font-serif);
+  font-size: clamp(1.15rem, 1.8vw, 1.35rem);
+  line-height: 1.5;
+  font-variation-settings: "opsz" 36, "SOFT" 60;
+  color: var(--color-kale-soft);
+  max-width: 58ch;
+}
+
+.kicker {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-leaf);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+  @view-transition {
+    navigation: none;
+  }
+
+  .btn,
+  .btn:hover,
+  .btn:active {
+    transition: none;
   }
 }

@@ -6,6 +6,7 @@ startDate: "2026-06"
 summary: "Opened a second distribution channel for Backstroke's prediction models — subject lines and hero recommendations reachable directly from Claude or any MCP-compatible assistant, not just our own UI."
 tags: [AI-PM, Eng, Strategy, Shipped]
 status: shipped
+grewFrom: [predictive-hero]
 featured: true
 order: 2
 links:

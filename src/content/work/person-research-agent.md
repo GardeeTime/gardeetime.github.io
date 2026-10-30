@@ -7,6 +7,7 @@ endDate: "2025-09"
 summary: "Fast-follow to Account Research after early-access feedback. Synthesizes CRM, web, and engagement data — including call transcripts — into a personalized narrative for the rep about the specific human they're calling."
 tags: [PM, AI, Shipped]
 status: shipped
+grewFrom: [account-research-agent]
 featured: true
 order: 6
 heroImage: ./screenshots/person-research-agent/cover.webp

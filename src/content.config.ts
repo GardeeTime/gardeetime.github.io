@@ -17,6 +17,8 @@ const work = defineCollection({
         .default("ongoing"),
       featured: z.boolean().default(false),
       order: z.number().optional(),
+      // Slugs of earlier projects this one built on; drawn as threads in the project map.
+      grewFrom: z.array(z.string()).default([]),
       heroImage: image().optional(),
       heroImageAlt: z.string().optional(),
       links: z

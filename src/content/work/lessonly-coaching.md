@@ -7,6 +7,7 @@ endDate: "2019-08"
 summary: "Evolved Lessonly from a knowledge-transfer platform into a performance-improvement platform. Built the suite for practice, manager and peer review, and skills assessment."
 tags: [PM, Strategy, Shipped]
 status: shipped
+grewFrom: [lessonly-practice]
 order: 18
 heroImage: ./screenshots/lessonly-coaching/cover.webp
 heroImageAlt: "Lessonly Sales Coaching guide cover"

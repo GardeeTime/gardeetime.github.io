@@ -6,6 +6,7 @@ startDate: "2026-08"
 summary: "Replaced the hero leaderboard with a single verdict against the image you'd send anyway — and gave Surge the honesty to refuse a send when personalization isn't predicted to beat it."
 tags: [AI-PM, Eng, Strategy, Shipped]
 status: shipped
+grewFrom: [surge, bulk-hero-variants]
 featured: true
 order: 1
 heroImage: ./screenshots/control-verdict/cover.jpg

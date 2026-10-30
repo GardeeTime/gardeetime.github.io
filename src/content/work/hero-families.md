@@ -6,6 +6,7 @@ startDate: "2026-09"
 summary: "Replaced 'six versions of one look' with seven distinct creative families, derived by classifying hundreds of real brand heroes, and taught the generator each brand's own materials, places, and props."
 tags: [AI-PM, Eng, Design, Shipped]
 status: shipped
+grewFrom: [bulk-hero-variants]
 featured: false
 order: 4
 heroImage: ./screenshots/hero-families/cover.png

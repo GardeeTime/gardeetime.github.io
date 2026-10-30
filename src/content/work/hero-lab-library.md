@@ -6,6 +6,7 @@ startDate: "2026-06"
 summary: "Closed the loop on Hero Lab: saved heroes and backgrounds now live in a searchable library and feed back into future generations, so proven creative compounds instead of being recreated from scratch."
 tags: [AI-PM, Eng, Design, Shipped]
 status: shipped
+grewFrom: [bulk-hero-variants]
 featured: false
 order: 8
 heroImage: ./screenshots/hero-lab-library/cover.png

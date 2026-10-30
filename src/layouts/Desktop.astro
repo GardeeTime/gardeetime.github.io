@@ -1,0 +1,531 @@
+---
+import "../styles/global.css";
+import Wallpaper from "../components/garden/Wallpaper.astro";
+import DesktopIcon from "../components/garden/DesktopIcon.astro";
+
+type Section = "home" | "work" | "map" | "about" | "harvest" | "compost" | "none";
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  windowTitle: string;
+  current?: Section;
+}
+
+const {
+  title = "Adam Gardner — Director of Product, Backstroke",
+  description = "Director of Product at Backstroke. Building AI-driven product systems, growing vegetables, and shipping code with Claude.",
+  ogImage,
+  windowTitle,
+  current = "none",
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+const watered = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", timeZone: "America/Indiana/Indianapolis" }).format(new Date());
+const year = new Date().getFullYear();
+const email = "mailto:adamgardner32@gmail.com";
+
+const nav = [
+  { href: "/work/", label: "Work", key: "work" },
+  { href: "/garden/", label: "Project map", key: "map" },
+  { href: "/harvest/", label: "Harvest log", key: "harvest" },
+  { href: "/about/", label: "About", key: "about" },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#dfe8c9" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonical} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    {ogImage && <meta property="og:image" content={new URL(ogImage, Astro.site).toString()} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&family=Fraunces:opsz,wght,SOFT@9..144,300..700,30..100&display=swap"
+    />
+  </head>
+  <body class="desk">
+    <a class="skip" href="#win-body">Skip to content</a>
+    <Wallpaper />
+
+    <header class="menubar">
+      <a class="menubar__brand" href="/">
+        <svg viewBox="0 0 32 32" width="24" height="24" aria-hidden="true">
+          <path d="M16 29V15" stroke="#1e2b1b" stroke-width="2.4" stroke-linecap="round" />
+          <path d="M16 17c0-7-4-11-11-12 0 7 4 11 11 12zM16 14c0-6 4-10 11-10 0 6-4 10-11 10z" fill="#5f8f3b" stroke="#1e2b1b" stroke-width="2" stroke-linejoin="round" />
+        </svg>
+        <span>Adam's Garden</span>
+      </a>
+      <nav class="menubar__nav" aria-label="Main">
+        {nav.map((n) => (
+          <a href={n.href} aria-current={current === n.key ? "page" : undefined}>{n.label}</a>
+        ))}
+      </nav>
+      <div class="menubar__right">
+        <span class="menubar__meta">Watered {watered}</span>
+        <span class="menubar__meta" data-clock>Indianapolis</span>
+        <a class="btn btn--small" href={email}>Say hi</a>
+      </div>
+    </header>
+
+    <nav class="dock" aria-label="Desktop">
+      <div class="dock__group dock__group--left">
+        <DesktopIcon name="welcome" label="Welcome" href="/" current={current === "home"} />
+        <DesktopIcon name="seeds" label="Work" href="/work/" current={current === "work"} />
+        <DesktopIcon name="beds" label="Project map" href="/garden/" current={current === "map"} />
+        <DesktopIcon name="greenhouse" label="About" href="/about/" current={current === "about"} />
+        <DesktopIcon name="harvest" label="Harvest log" href="/harvest/" current={current === "harvest"} />
+      </div>
+      <div class="dock__group dock__group--right">
+        <DesktopIcon name="almanac" label="Writing" href="https://www.backstroke.com/blog/just-a-pm-who-shipped-to-production" external />
+        <DesktopIcon name="notes" label="Kind words" href="/#kind-words" />
+        <DesktopIcon name="shed" label="GitHub" href="https://github.com/GardeeTime" external />
+        <DesktopIcon name="compost" label="Compost" href="/compost/" current={current === "compost"} />
+      </div>
+    </nav>
+
+    <main class="win" id="main" data-win aria-label={windowTitle}>
+      <div class="win__bar" data-win-bar>
+        <span class="win__title">{windowTitle}</span>
+        <div class="win__ctrls">
+          <button type="button" class="win__btn" data-win-max aria-label="Maximize window" aria-pressed="false">
+            <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><rect x="2.5" y="2.5" width="11" height="11" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.8" /></svg>
+          </button>
+          <button type="button" class="win__btn" data-win-close aria-label="Close window">
+            <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M3.5 3.5l9 9M12.5 3.5l-9 9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" /></svg>
+          </button>
+        </div>
+      </div>
+      <div class="win__body" id="win-body" tabindex="0" data-win-body>
+        <slot />
+        <footer class="win__foot">
+          <p>&copy; {year} Adam Gardner. Grown in Indianapolis with Claude.</p>
+          <p class="win__foot-links">
+            <a href="https://github.com/GardeeTime" target="_blank" rel="noreferrer noopener">GitHub</a>
+            <a href="https://www.linkedin.com/in/adamgardner-97508353" target="_blank" rel="noreferrer noopener">LinkedIn</a>
+            <a href={email}>Email</a>
+          </p>
+        </footer>
+      </div>
+    </main>
+
+    <aside class="note" data-desk-note hidden>
+      <p>Window closed. Pick any icon to open a page, or bring this one back.</p>
+      <button type="button" class="btn btn--small" data-win-open>Reopen window</button>
+    </aside>
+
+    <script is:inline>
+      // Restore the window's position before first paint so it doesn't jump between pages.
+      try {
+        const s = JSON.parse(sessionStorage.getItem("garden-win") || "{}");
+        const w = document.querySelector("[data-win]");
+        if (s.max) w.classList.add("is-max");
+        if (typeof s.dx === "number") {
+          w.style.setProperty("--dx", s.dx + "px");
+          w.style.setProperty("--dy", s.dy + "px");
+        }
+      } catch {}
+    </script>
+  </body>
+</html>
+
+<style>
+  .skip {
+    position: absolute;
+    left: -999px;
+    top: 0;
+    z-index: 50;
+    background: var(--color-paper);
+    padding: 0.5rem 0.75rem;
+  }
+
+  .skip:focus {
+    left: 0.5rem;
+    top: 0.5rem;
+  }
+
+  .menubar {
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 20;
+    height: var(--menubar-h);
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding-inline: 0.9rem;
+    background: rgb(223 232 201 / 0.94);
+    border-bottom: 1.5px solid var(--color-kale);
+    backdrop-filter: blur(6px);
+  }
+
+  .menubar__brand {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--color-kale);
+    font-weight: 750;
+    font-variation-settings: "opsz" 24, "wdth" 90;
+    font-size: 1.05rem;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .menubar__nav {
+    display: flex;
+    gap: 0.25rem;
+  }
+
+  .menubar__nav a {
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+    color: var(--color-kale);
+    font-weight: 550;
+    font-size: 0.925rem;
+    text-decoration: none;
+  }
+
+  .menubar__nav a:hover {
+    background: var(--color-chard-deep);
+  }
+
+  .menubar__nav a[aria-current="page"] {
+    background: var(--color-kale);
+    color: var(--color-paper);
+  }
+
+  .menubar__right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .menubar__meta {
+    font-size: 0.85rem;
+    color: var(--color-kale-soft);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .dock {
+    position: relative;
+    z-index: 5;
+  }
+
+  .dock__group {
+    position: fixed;
+    top: calc(var(--menubar-h) + 14px);
+    bottom: 14px;
+    width: var(--rail-w);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .dock__group--left {
+    left: 6px;
+  }
+
+  .dock__group--right {
+    right: 6px;
+  }
+
+  .dock__group--right > :global(:last-child) {
+    margin-top: auto;
+  }
+
+  .win {
+    --dx: 0px;
+    --dy: 0px;
+    position: fixed;
+    z-index: 10;
+    top: calc(var(--menubar-h) + 18px);
+    bottom: 18px;
+    left: 50%;
+    width: min(1060px, calc(100vw - 2 * (var(--rail-w) + 28px)));
+    transform: translate(calc(-50% + var(--dx)), var(--dy));
+    display: grid;
+    grid-template-rows: auto 1fr;
+    background: var(--color-paper);
+    border: 1.5px solid var(--color-kale);
+    border-radius: 12px;
+    box-shadow:
+      0 2px 0 rgb(30 43 27 / 0.9),
+      0 24px 48px -12px rgb(30 43 27 / 0.45);
+    overflow: hidden;
+    view-transition-name: win;
+  }
+
+  .win.is-max {
+    top: calc(var(--menubar-h) + 6px);
+    bottom: 6px;
+    width: calc(100vw - 12px);
+    transform: translateX(-50%);
+  }
+
+  .win.is-closed {
+    display: none;
+  }
+
+  .win__bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    height: 40px;
+    padding-inline: 0.9rem 0.45rem;
+    background: var(--color-chard);
+    border-bottom: 1.5px solid var(--color-kale);
+    cursor: grab;
+    user-select: none;
+    touch-action: none;
+  }
+
+  .win.is-dragging .win__bar {
+    cursor: grabbing;
+  }
+
+  .win__title {
+    font-weight: 650;
+    font-size: 0.925rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .win__ctrls {
+    margin-left: auto;
+    display: flex;
+    gap: 0.25rem;
+  }
+
+  .win__btn {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 28px;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--color-kale);
+    cursor: pointer;
+  }
+
+  .win__btn:hover {
+    background: var(--color-chard-deep);
+  }
+
+  .win__body {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: clamp(1.5rem, 4vw, 3.25rem) clamp(1.25rem, 5vw, 4rem) 0;
+    scroll-padding-top: 1rem;
+    outline: none;
+  }
+
+  .win__body:focus-visible {
+    box-shadow: inset 0 0 0 3px var(--color-squash);
+  }
+
+  .win__foot {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.75rem 2rem;
+    margin-top: 5rem;
+    padding-block: 1.5rem 2rem;
+    border-top: 1.5px dashed var(--color-chard-deep);
+    font-size: 0.875rem;
+    color: var(--color-kale-soft);
+  }
+
+  .win__foot p {
+    margin: 0;
+  }
+
+  .win__foot-links {
+    display: flex;
+    gap: 1.25rem;
+  }
+
+  .note {
+    position: fixed;
+    z-index: 8;
+    top: 34%;
+    left: 50%;
+    width: min(320px, 80vw);
+    padding: 1.25rem 1.25rem 1.1rem;
+    transform: translateX(-50%) rotate(-2deg);
+    background: var(--color-squash-soft);
+    border: 1.5px solid var(--color-kale);
+    border-radius: 4px;
+    box-shadow: 0 14px 28px -10px rgb(30 43 27 / 0.5);
+    font-size: 1rem;
+    font-weight: 550;
+  }
+
+  .note p {
+    margin: 0 0 0.9rem;
+  }
+
+  /* Below desktop width the window becomes the page and the icons become a dock. */
+  @media (max-width: 1099px) {
+    .menubar {
+      position: sticky;
+      gap: 0.75rem;
+    }
+
+    .menubar__nav,
+    .menubar__meta {
+      display: none;
+    }
+
+    .dock {
+      display: flex;
+      gap: 0.25rem;
+      overflow-x: auto;
+      padding: 0.6rem 0.5rem 0.25rem;
+      scrollbar-width: none;
+    }
+
+    .dock__group {
+      position: static;
+      flex-direction: row;
+      width: auto;
+      gap: 0.25rem;
+    }
+
+    .dock__group--right > :global(:last-child) {
+      margin-top: 0;
+    }
+
+    .win,
+    .win.is-max {
+      position: relative;
+      inset: auto;
+      left: auto;
+      width: auto;
+      margin: 0.5rem 0.6rem 1.5rem;
+      transform: none;
+      display: block;
+      overflow: visible;
+    }
+
+    .win__bar {
+      cursor: default;
+      border-radius: 12px 12px 0 0;
+    }
+
+    .win__ctrls {
+      display: none;
+    }
+
+    .win__body {
+      overflow: visible;
+    }
+  }
+</style>
+
+<script>
+  const win = document.querySelector<HTMLElement>("[data-win]")!;
+  const bar = win.querySelector<HTMLElement>("[data-win-bar]")!;
+  const maxBtn = win.querySelector<HTMLButtonElement>("[data-win-max]")!;
+  const note = document.querySelector<HTMLElement>("[data-desk-note]")!;
+  const desktop = window.matchMedia("(min-width: 1100px)");
+
+  const state = (() => {
+    try {
+      return JSON.parse(sessionStorage.getItem("garden-win") || "{}");
+    } catch {
+      return {};
+    }
+  })();
+  const save = () => {
+    try {
+      sessionStorage.setItem("garden-win", JSON.stringify(state));
+    } catch {}
+  };
+
+  const syncMax = () => maxBtn.setAttribute("aria-pressed", String(win.classList.contains("is-max")));
+  syncMax();
+
+  function toggleMax() {
+    win.classList.toggle("is-max");
+    state.max = win.classList.contains("is-max");
+    syncMax();
+    save();
+  }
+  maxBtn.addEventListener("click", toggleMax);
+  bar.addEventListener("dblclick", (e) => {
+    if (desktop.matches && !(e.target as HTMLElement).closest("button")) toggleMax();
+  });
+
+  win.querySelector("[data-win-close]")!.addEventListener("click", () => {
+    win.classList.add("is-closed");
+    note.hidden = false;
+    note.querySelector("button")!.focus();
+  });
+  note.querySelector("[data-win-open]")!.addEventListener("click", () => {
+    win.classList.remove("is-closed");
+    note.hidden = true;
+    document.getElementById("win-body")!.focus();
+  });
+
+  // Drag the window by its title bar; keep at least the bar on screen.
+  let drag: { x: number; y: number; dx: number; dy: number } | null = null;
+  bar.addEventListener("pointerdown", (e) => {
+    if (!desktop.matches || win.classList.contains("is-max") || (e.target as HTMLElement).closest("button")) return;
+    drag = { x: e.clientX, y: e.clientY, dx: state.dx ?? 0, dy: state.dy ?? 0 };
+    bar.setPointerCapture(e.pointerId);
+    win.classList.add("is-dragging");
+  });
+  bar.addEventListener("pointermove", (e) => {
+    if (!drag) return;
+    const rect = win.getBoundingClientRect();
+    const maxX = (window.innerWidth - rect.width) / 2 + rect.width - 120;
+    const dx = Math.max(-maxX, Math.min(maxX, drag.dx + e.clientX - drag.x));
+    const dy = Math.max(-20, Math.min(window.innerHeight - 160, drag.dy + e.clientY - drag.y));
+    state.dx = Math.round(dx);
+    state.dy = Math.round(dy);
+    win.style.setProperty("--dx", `${state.dx}px`);
+    win.style.setProperty("--dy", `${state.dy}px`);
+  });
+  const endDrag = () => {
+    if (!drag) return;
+    drag = null;
+    win.classList.remove("is-dragging");
+    save();
+  };
+  bar.addEventListener("pointerup", endDrag);
+  bar.addEventListener("pointercancel", endDrag);
+
+  // Inside the window, in-page anchors scroll the window body rather than the page.
+  if (location.hash) {
+    document.getElementById(location.hash.slice(1))?.scrollIntoView();
+  }
+
+  const clock = document.querySelector<HTMLElement>("[data-clock]");
+  if (clock) {
+    const fmt = new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit", timeZone: "America/Indiana/Indianapolis" });
+    const tick = () => (clock.textContent = `Indianapolis ${fmt.format(new Date())}`);
+    tick();
+    setInterval(tick, 30_000);
+  }
+</script>

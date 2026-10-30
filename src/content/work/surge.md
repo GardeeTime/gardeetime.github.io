@@ -6,6 +6,7 @@ startDate: "2026-02"
 summary: "Predictive hero intelligence for Klaviyo campaigns. Marketers pick the heroes, Surge predicts the winner per audience segment, and delivers a ready-to-drag content block. GA April 2026."
 tags: [AI-PM, Eng, Shipped, Strategy]
 status: shipped
+grewFrom: [predictive-hero]
 featured: true
 order: 2
 heroImage: ./screenshots/surge/surge-cover.avif

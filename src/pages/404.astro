@@ -1,51 +1,37 @@
 ---
-import Base from "../layouts/Base.astro";
+import Desktop from "../layouts/Desktop.astro";
 ---
 
-<Base title="404 — page not found">
-  <section class="not-found">
-    <div class="container-prose">
-      <p class="eyebrow">404 · spore drifted</p>
-      <h1>This page didn't take root.</h1>
-      <p class="lede">
-        Either the page moved, never existed, or hasn't fruited yet. Try one of these instead:
-      </p>
-      <ul class="links">
-        <li><a href="/" class="ink-link">Home</a></li>
-        <li><a href="/work/" class="ink-link">All work</a></li>
-        <li><a href="/about/" class="ink-link">About</a></li>
-      </ul>
+<Desktop title="Page not found — Adam Gardner" windowTitle="Empty bed">
+  <section class="nf">
+    <svg viewBox="0 0 120 80" width="180" height="120" aria-hidden="true">
+      <rect x="4" y="18" width="112" height="56" rx="3" fill="#a87c55" stroke="#1e2b1b" stroke-width="2.5" />
+      <rect x="14" y="28" width="92" height="36" fill="#4a3527" stroke="#1e2b1b" stroke-width="2" />
+      <path d="M60 52v-8" stroke="#1e2b1b" stroke-width="2.4" stroke-linecap="round" />
+      <path d="M60 46c0-5-3-8-8-8 0 5 3 8 8 8zM60 44c0-4 3-7 8-7 0 4-3 7-8 7z" fill="#8dbf56" stroke="#1e2b1b" stroke-width="1.8" stroke-linejoin="round" />
+    </svg>
+    <h1>Nothing's planted here.</h1>
+    <p class="lede">This page moved, never existed, or hasn't sprouted yet. Try one of these:</p>
+    <div class="nf__actions">
+      <a class="btn" href="/work/">See the work</a>
+      <a class="btn btn--plain" href="/">Back to the garden</a>
     </div>
   </section>
-</Base>
+</Desktop>
 
 <style>
-  .not-found {
-    padding-top: clamp(4rem, 12vh, 8rem);
-    padding-bottom: 6rem;
+  .nf {
+    padding-block: 2rem;
   }
 
-  .not-found h1 {
-    margin-block: 0.75rem 1.25rem;
+  .nf h1 {
+    margin: 1.5rem 0 1rem;
   }
 
-  .lede {
-    font-family: var(--font-serif);
-    font-size: 1.25rem;
-    color: var(--color-ink-muted);
-    line-height: 1.5;
-    max-width: 40ch;
-    margin-bottom: 2rem;
-  }
-
-  .links {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  .nf__actions {
     display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    font-family: var(--font-mono);
-    font-size: 0.875rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1.75rem;
   }
 </style>

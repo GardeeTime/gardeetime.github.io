@@ -1,0 +1,55 @@
+---
+import { getCollection } from "astro:content";
+import Desktop from "../layouts/Desktop.astro";
+import SeedPacket from "../components/garden/SeedPacket.astro";
+
+const compost = (await getCollection("work"))
+  .filter((e) => e.data.status === "poc" || e.data.status === "concept")
+  .sort((a, b) => b.data.startDate.localeCompare(a.data.startDate));
+---
+
+<Desktop title="Compost — Adam Gardner" windowTitle="Compost bin" current="compost">
+  <header class="head">
+    <h1>Compost bin</h1>
+    <p class="lede">
+      Prototypes and concepts that didn't make it to harvest. Nothing here is wasted: each one broke down into
+      something the next season's work grew from.
+    </p>
+  </header>
+
+  {compost.length > 0 ? (
+    <ul class="pile">
+      {compost.map((entry) => (
+        <li><SeedPacket entry={entry} headingLevel="h2" /></li>
+      ))}
+    </ul>
+  ) : (
+    <p class="empty">The bin is empty right now. Everything planted lately has come up.</p>
+  )}
+
+  <p class="more"><a class="btn btn--plain" href="/harvest/">See what did ship</a></p>
+</Desktop>
+
+<style>
+  .head h1 {
+    margin: 0 0 1rem;
+  }
+
+  .pile {
+    list-style: none;
+    margin: 2.5rem 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 300px));
+    gap: 1.5rem;
+  }
+
+  .empty {
+    margin-top: 2rem;
+    font-weight: 600;
+  }
+
+  .more {
+    margin-top: 3rem;
+  }
+</style>

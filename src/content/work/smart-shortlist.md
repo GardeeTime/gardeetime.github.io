@@ -6,6 +6,7 @@ startDate: "2026-08"
 summary: "Built and rolled out a visual-quality gate that pre-selects the usable Hero Lab variants and screens out text over faces and unreadable contrast, so a full manual review becomes a quick pass."
 tags: [AI-PM, Eng, Ops, Shipped]
 status: shipped
+grewFrom: [bulk-hero-variants]
 featured: false
 order: 4
 heroImage: ./screenshots/smart-shortlist/cover.png

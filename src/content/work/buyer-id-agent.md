@@ -7,6 +7,7 @@ endDate: "2025-06"
 summary: "Tackled manual prospecting drift with a partner-data integration. Surfaces existing CRM contacts and net-new ICP-fit prospects without forcing a tool switch."
 tags: [PM, AI, Shipped]
 status: shipped
+grewFrom: [auto-buying-group]
 order: 12
 heroImage: ./screenshots/buyer-id-agent/cover.webp
 heroImageAlt: "ZoomInfo and Salesloft logos paired, marking the partner-data integration"

@@ -1,0 +1,14 @@
+---
+import { veggieFor } from "./veggies";
+
+interface Props {
+  slug: string;
+  size?: number;
+  class?: string;
+}
+
+const { slug, size = 40, class: className } = Astro.props;
+const v = veggieFor(slug);
+---
+
+<svg class={className} width={size} height={size} viewBox="0 0 48 48" aria-hidden="true" focusable="false" set:html={v.svg} />

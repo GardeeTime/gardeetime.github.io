@@ -21,6 +21,7 @@ tags: [PM, AI, Shipped]       # free-form
 status: shipped               # shipped | in-progress | poc | concept | ongoing
 featured: true                # show on home page (default false)
 order: 1                      # lower = higher in list
+grewFrom: [surge]             # optional — slugs of earlier projects this built on; drawn as vines on /garden/
 heroImage: ./screenshots/cover.png   # optional cover image
 heroImageAlt: "Description for accessibility"
 links:

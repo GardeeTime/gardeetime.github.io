@@ -7,6 +7,7 @@ endDate: "2024-04"
 summary: "Led discovery through delivery on a knowledge surface that pulls product, sales, and competitive context into the rep workflow."
 tags: [PM, AI, Shipped]
 status: shipped
+grewFrom: [ai-dynamic-emails]
 order: 14
 heroImage: ./screenshots/ai-knowledge-library/cover.webp
 heroImageAlt: "AI Knowledge Library interface showing conversational search results"
