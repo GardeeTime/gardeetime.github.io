@@ -10,7 +10,7 @@ status: shipped
 featured: true
 order: 1
 heroImage: ./screenshots/shopify-integration/cover.png
-heroImageAlt: "Shopify shopping-bag logo — Backstroke is now a listed Shopify app"
+heroImageAlt: "Select Products from Shopify picker inside a Backstroke campaign, with three catalog products selected"
 links:
   - label: "Shopify App Store listing"
     url: "https://apps.shopify.com/backstroke"
@@ -21,6 +21,8 @@ links:
 ## What it does
 
 Connect your Shopify store to Backstroke in one click. Your full product catalog — products, images, variants, collections — syncs in automatically and stays in sync as your inventory changes. Marketers use real Shopify product data directly inside Backstroke email campaigns instead of manually copying or updating product info.
+
+![Backstroke's Products page showing a synced Shopify catalog of 30 products, with a Resync Products button](./screenshots/shopify-integration/products.png)
 
 ## What I built
 

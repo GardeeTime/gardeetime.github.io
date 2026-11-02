@@ -9,6 +9,8 @@ status: shipped
 grewFrom: [predictive-hero]
 featured: true
 order: 2
+heroImage: ./screenshots/backstroke-mcp/cover.png
+heroImageAlt: "Claude listing the nine tools the Backstroke MCP provides, grouped into subject-line prediction, hero scoring, and account lookups"
 links:
   - label: "Product update"
     url: "https://www.backstroke.com/product-updates/backstroke-mcp-(early-access)"
